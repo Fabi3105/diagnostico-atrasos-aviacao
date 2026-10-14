@@ -425,3 +425,11 @@ Todas aprovadas; passam a valer como parte das perguntas principais.
 - Azul 5,7 incluída no Anexo A e no Anexo D.
 - Vendaval de 10 a 12/12 explicado: os dois dias mais o dia de recuperação.
 - "Sai mais barato" trocado por "tende a gerar menos reclamações".
+
+## Publicação (14/10/2026)
+
+- Fabian aprovou o relatório e o painel depois da 8ª rodada.
+- Repositório público Fabi3105/diagnostico-atrasos-aviacao, com GitHub Pages a partir de main (raiz). Painel em https://fabi3105.github.io/diagnostico-atrasos-aviacao/.
+- About preenchido com site e tópicos (airline, anac, aviation, brazil, customer-experience, dashboard, data-analysis, portfolio, python).
+- Painel e links do relatório (PDF e texto) conferidos no ar.
+- Ajuste posterior no README: frase do achado 1 alinhada com o relatório.

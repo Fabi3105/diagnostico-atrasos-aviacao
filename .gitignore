@@ -16,3 +16,4 @@ dados/externos/*.csv
 !dados/FONTES.md
 
 _publicar_github.bat
+_atualizar_github.bat

@@ -9,7 +9,7 @@ Estudo independente de dados abertos da ANAC, do ponto de vista de uma companhia
 
 ## Principais conclusões
 
-1. **O atraso nasce em poucos aeroportos e se espalha pela malha da própria companhia.** Hora e mês explicam a maior parte do atraso; do que sobra entre Azul, LATAM e Gol, 86% vem do aeroporto, não da companhia. GRU e Congonhas concentram 27% dos minutos de atraso do país.
+1. **O atraso nasce em poucos aeroportos e se espalha pela malha da própria companhia.** Da parte do atraso que se consegue explicar, hora e mês pesam mais; da diferença entre Azul, LATAM e Gol, 86% vem do aeroporto, não da companhia. GRU e Congonhas concentram 27% dos minutos de atraso do país.
 2. **Os horários têm pouca folga; com a mesma quantidade de minutos, a folga direcionada evita quase 30% mais atrasos do que a folga igual para todos.** Testado fora da amostra: regra aprendida no 1º ano e aplicada no 2º.
 3. **Cerca de 14% dos atrasos estão ligados ao clima.** O fim de ano (1 a 23 de dezembro) é o pior período mesmo com tempo bom.
 4. **A ponte aérea cancela 2,4 vezes mais que o resto da rede das três grandes**, e cerca de 39% a 47% dos cancelamentos estimados têm motivo técnico-operacional.
