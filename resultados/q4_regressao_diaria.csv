@@ -1,0 +1,11 @@
+﻿,,coef_pp,margem_baixa,margem_alta
+atraso30,carga_10pct,2.783,2.028,3.739
+atraso30,feriado,-0.886,-2.036,0.379
+atraso30,vespera_dia_seguinte,-0.677,-1.573,0.314
+atraso30,ferias_verao,1.039,0.35,1.685
+atraso30,ferias_julho,-1.35,-2.135,-0.614
+cancelamento,carga_10pct,0.789,0.473,1.132
+cancelamento,feriado,-0.045,-0.464,0.365
+cancelamento,vespera_dia_seguinte,-0.01,-0.384,0.35
+cancelamento,ferias_verao,0.197,-0.016,0.392
+cancelamento,ferias_julho,-0.312,-0.533,-0.074

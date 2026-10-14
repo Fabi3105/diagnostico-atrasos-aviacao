@@ -1,0 +1,7 @@
+﻿pontos_acima_do_mercado,fracao_dos_meses,combinacoes,parte_dos_minutos_pct,quais
+2.0,0.6,14,7.22,"GRU 22h, GRU 23h, GRU 8h, GRU 12h, REC 20h, RAO 19h, CWB 16h, UDI 10h"
+2.0,0.75,4,5.25,"GRU 22h, GRU 23h, GRU 8h, UDI 14h"
+3.0,0.6,5,3.69,"GRU 22h, GRU 8h, UDI 10h, VIX 14h, UDI 14h"
+3.0,0.75,2,2.31,"GRU 22h, UDI 14h"
+5.0,0.6,1,2.21,GRU 22h
+5.0,0.75,0,0.0,

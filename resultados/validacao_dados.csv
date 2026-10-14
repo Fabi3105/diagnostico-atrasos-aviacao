@@ -1,0 +1,37 @@
+﻿grupo,checagem,valor,passou,observacao
+voos,linhas no VRA,"2,016,781",sim,"24 arquivos mensais, set/2024 a ago/2026"
+voos,arquivos mensais,24,sim,"menor mês 78,930 linhas, maior 91,650"
+voos,tipo de linha,"vazio=463; C=31,011; G=44,096; I=332,051; N=1,609,160",sim,"N doméstico regular, I internacional, G cargueiro, C charter. Escopo: N (definição B)"
+voos,registros sem horário previsto,"CANCELADO=21,891; REALIZADO=159,969",sim,"voos não programados (extras, traslados, retornos ao pátio, testes; muitos com prefixo Z e origem = destino). Não são promessa ao passageiro: fora do escopo"
+voos,realizados sem horário real,0,sim,
+voos,cancelados com horário real,0,sim,
+voos,"voos repetidos (empresa, número, origem, partida prevista)",123,sim,"menos de 0,01% da base; mantidos, sem efeito nas taxas"
+voos,justificativa de atraso preenchida,0,sim,campo vazio desde 2020 (revogação da IAC 1504): a causa do atraso não é observável
+escopo,voos no escopo (domésticos regulares com horário previsto),"1,570,951",sim,"realizados 1,540,099; cancelados 30,852"
+escopo,voos por mês no escopo,"59,715 a 69,570",sim,"variação sazonal normal, sem mês faltando ou incompleto"
+escopo,"participação de Azul, LATAM e Gol",97.5%,sim,AZU 35.6%; TAM 33.6%; GLO 28.2%; ACN 2.0%; PTB 0.4%; PAM 0.1%
+escopo,atraso de partida acima de 24 horas,15,sim,mantidos nas taxas (são atrasos reais); médias usam mediana ou limite para não serem distorcidas
+escopo,partida mais de 2 horas antes do previsto,134,sim,provável troca de horário não atualizada; contam como 'antecipado'
+escopo,atraso de partida acima de 30 min,7.9%,sim,definição A (classe oficial ANAC)
+escopo,atraso de chegada acima de 30 min,7.8%,sim,
+escopo,partidas antes do horário previsto,56.1%,sim,"dado de partida = saída do pátio (calço), não decolagem"
+escopo,taxa de cancelamento,2.0%,sim,cancelados ÷ voos previstos (definição C). A base não diz com que antecedência o voo foi cancelado
+escopo,voos com aeroporto de origem traduzido para IATA,99.47%,sim,tabela ICAO->IATA montada pelo analista (base.py); necessária para ligar voos às reclamações
+fuso,horário dos registros,horário de Brasília,sim,GRU->MAO e MAO->GRU com duração prevista igual (238 e 236 min) e Congonhas com partidas das 6h às 22h (o aeroporto fecha à noite). Aeroportos de outro fuso são ajustados pelo estado quando a análise for por hora local
+reclamacoes,linhas,"193,935",sim,"2024: 90,595; 2025: 103,340"
+reclamacoes,período,2024-01-01 a 2025-12-31,sim,cruzamento com voos: set/2024 a dez/2025 (16 meses em comum)
+reclamacoes,companhia sem código ICAO,0,sim,
+reclamacoes,"participação de Azul, LATAM e Gol",81.8%,sim,
+reclamacoes,sem código classificador ANAC,3952,sim,2.0%; ficam fora das análises por tema e aeroporto
+reclamacoes,código com formato inválido,0,sim,
+reclamacoes,reclamações com mais de um local/grupo,633,sim,todos os grupos entram na contagem por aeroporto e tema
+reclamacoes,códigos de assunto sem tema reconhecido,1,sim,
+reclamacoes,gravidade (definição F),baixa 39.1%; média 33.3%; alta 27.6%,sim,pior tema da reclamação
+reclamacoes,reclamações com aeroporto informado,30.7%,sim,"as demais ocorreram em site, aplicativo, telefone, loja ou agência (letra no campo Local)"
+reclamacoes,aeroportos de voo doméstico sem tradução para ICAO,41 citações,sim,"0.1% das citações domésticas; principais: AUX 7, AIR 5, PGZ 5, QNS 4, PTQ 4, FEC 3, PAV 2, TOW 2"
+reclamacoes,nota fora de 1 a 5,0,sim,sem nota: 49.2% (consumidor não avaliou)
+reclamacoes,reclamações ainda não finalizadas,"26,994",sim,"sem avaliação final do consumidor; contam no volume, não na taxa de resolução"
+reclamacoes,classificação da própria empresa,P 38.1%; I 22.6%; M 21.4%; N 17.9%,sim,"P procedente, M parcialmente, I improcedente, N não informou. É a visão da empresa, não do consumidor"
+voos,erros de data (atraso perto de múltiplo de 24 h),126,sim,Partida prevista registrada em outro dia (ex.: AZU 2612 em nov/2024). Ficam fora das taxas e dos minutos (base.voos_escopo)
+voos,"voos duplicados (empresa, número, partida prevista)",6,sim,"Desprezível (de 1,57 milhão)"
+reclamações,linhas iguais em todos os campos menos o protocolo,1163,sim,"Mantidas: têm protocolos diferentes e podem ser reclamações repetidas; 0,6% do total, nenhuma conclusão muda"

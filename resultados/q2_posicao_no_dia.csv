@@ -1,0 +1,8 @@
+﻿faixa_posicao,voos,atraso30_pct
+1º voo do dia,139557.0,5.35
+2º-3º,174783.0,5.5
+4º-10º,336015.0,6.62
+11º-30º,371432.0,7.27
+31º ou mais,484580.0,10.31
+"1º voo do dia, antes das 9h",87512.0,4.15
+demais voos antes das 9h,302208.0,4.24

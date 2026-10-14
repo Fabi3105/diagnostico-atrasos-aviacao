@@ -1,0 +1,10 @@
+﻿medida,valor
+"voos da 1ª onda (pernoite, antes das 10h) % dos voos",7.31
+atraso da 1ª onda %,3.114
+atraso do resto do dia %,8.088
+coeficiente 1ª onda própria -> resto do dia,0.304
+margem baixa,0.237
+margem alta,0.379
+coeficiente choque do dia (resto das outras companhias),0.738
+queda estimada no atraso do resto do dia se a 1ª onda fosse 100% pontual (pp),0.948
+"idem, em % do atraso do resto do dia",11.719

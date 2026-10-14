@@ -1,0 +1,7 @@
+﻿faixa,dias,atraso_medio_pct
+0,76.0,5.217
+1-5,217.0,6.245
+6-15,307.0,8.172
+16-40,129.0,10.409
+mais de 40,1.0,9.723
+R² do clima na variação diária,,0.152

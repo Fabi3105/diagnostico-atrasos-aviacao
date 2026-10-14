@@ -1,0 +1,15 @@
+﻿grupo_piloto,grupo_comparacao,taxa_piloto_pct,dp_diario_da_diferenca_pp,autocorrelacao,dias_efetivos_em_90,menor_efeito_detectavel_90d_pp,menor_efeito_detectavel_180d_pp,reclamacoes_avaliadas_por_grupo_em_90d
+SBSP+SBKP,SBGR+SBCF+SBGL,8.746,5.242,0.279,50.757,2.06,1.457,
+GRU_tarde,CGH_tarde,11.774,13.886,0.239,55.315,5.228,3.697,
+voos_sorteados,demais_voos,8.755,2.647,0.042,82.717,0.815,0.576,
+GRU_tarde_sorteados,GRU_tarde_demais,11.578,7.235,0.07,78.148,2.291,1.62,
+semanas com folga (CGH+VCP),semanas sem folga (mesmos aeroportos),8.845,,,,6.862,4.662,
+"Gol, bagagem extraviada (metade das filas)",outra metade,36.727,,,,46.044,32.558,17.188
+casos necessários por grupo para +28 pontos de resolução,,36.727,,,,,,46.069
+casos necessários por grupo para +10 pontos de resolução,,36.727,,,,,,377.349
+"Azul, CGH+VCP, voos sorteados (mediana de 20 sorteios)",demais voos da mesma companhia,8.214,3.909,0.005,89.134,1.159,0.82,
+"Azul, GRU tarde, voos sorteados (mediana de 20 sorteios)",demais voos da mesma companhia,8.719,25.108,0.088,75.453,8.093,5.723,
+"LATAM, CGH+VCP, voos sorteados (mediana de 20 sorteios)",demais voos da mesma companhia,8.794,4.88,0.097,74.133,1.587,1.122,
+"LATAM, GRU tarde, voos sorteados (mediana de 20 sorteios)",demais voos da mesma companhia,13.659,9.764,0.052,81.137,3.035,2.146,
+"Gol, CGH+VCP, voos sorteados (mediana de 20 sorteios)",demais voos da mesma companhia,8.742,4.775,-0.019,93.512,1.383,0.978,
+"Gol, GRU tarde, voos sorteados (mediana de 20 sorteios)",demais voos da mesma companhia,8.122,11.091,-0.035,96.445,3.162,2.236,

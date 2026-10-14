@@ -1,0 +1,132 @@
+﻿tema,descricao,texto_procurado,arquivo,esta_no_relatorio
+geral,voos no escopo,1.570.951,indicadores_padrao.csv,sim
+geral,realizados,1.540.099,indicadores_padrao.csv,sim
+geral,cancelados,30.852,indicadores_padrao.csv,sim
+geral,atraso > 30,"7,9%",indicadores_padrao.csv,sim
+geral,cancelamento,"2,0%",indicadores_padrao.csv,sim
+geral,mediana dos atrasados,51 minutos,indicadores_padrao.csv,sim
+geral,minutos de atraso,"8,7 milhões",indicadores_padrao.csv,sim
+geral,cobertura ICAO-IATA,"99,47%",validacao_dados.csv,sim
+P1,aeroporto explica atraso (3 grandes),aeroporto explica 86%,q1_decomposicao.csv,sim
+P1,aeroporto explica cancelamento,80% da de cancelamento,q1_decomposicao.csv,sim
+P1,sem clima: aeroporto,aeroporto 79%,qc_p1_decomposicao_sem_clima.csv,sim
+P1,efeito Gol,"1,2 ponto percentual abaixo",q1_efeito_companhia.csv,sim
+P1,efeito Azul,"Azul fica 0,7 acima",q1_efeito_companhia.csv,sim
+P1,Azul Conecta cancela,"15,6% dos voos",q1_efeito_companhia.csv,sim
+P1,GRU+CGH minutos,concentram 27% de todos os minutos,q1_aeroportos.csv,sim
+P1,efeito GRU,"+3,7 pontos",q1_efeito_aeroporto.csv,sim
+P2,chegadas no horário,"2,6%",q2b_probabilidade_por_situacao.csv,sim
+P2,maioria atrasada,"29,1%",q2b_probabilidade_por_situacao.csv,sim
+P2,1º voo do dia,"5,3%",q2_posicao_no_dia.csv,sim
+P2,31º em diante,"10,3%",q2_posicao_no_dia.csv,sim
+P2,bola de neve outros aeroportos,"+3,5 pontos",q2_bola_de_neve.csv,sim
+P2,bola de neve mesmo aeroporto,"+2,2 pontos",q2_bola_de_neve.csv,sim
+P2,bola de neve outras companhias,"+0,8 ponto",q2_bola_de_neve.csv,sim
+P2,1ª onda % dos voos,"7,3% dos voos",q2b_primeira_onda_efeito.csv,sim
+P2,1ª onda atraso,"atrasam 3,1%",q2b_primeira_onda_efeito.csv,sim
+P2,1ª onda efeito,cairia cerca de 12%,q2b_primeira_onda_efeito.csv,sim
+clima,atraso normal x severo,"de 7,0% para 17,4%",qc_impacto_clima.csv,sim
+clima,cancelamento normal x severo,"de 1,6% para 4,5%",qc_impacto_clima.csv,sim
+clima,parte ligada ao clima,"13,6% dos atrasos",qc_parte_clima.csv,sim
+P3,recuperação Gol,"25,7%",q3_recuperacao_no_ar_companhia.csv,sim
+P3,folga Gol,"5,6 na Gol",q3_recuperacao_no_ar_companhia.csv,sim
+P3,recuperação LATAM,"22,9%",q3_recuperacao_no_ar_companhia.csv,sim
+P3,folga LATAM,"4,1 na LATAM",q3_recuperacao_no_ar_companhia.csv,sim
+P3,recuperação Azul,"14,2%",q3_recuperacao_no_ar_companhia.csv,sim
+P3,folga Azul,"3,1 minutos de folga na Azul",q3_recuperacao_no_ar_companhia.csv,sim
+P3,Gol evita no ar,775 atrasos,q3_recuperacao_no_ar_companhia.csv,sim
+P3,Azul a mais,322 atrasos a mais,q3_recuperacao_no_ar_companhia.csv,sim
+P3,voos crônicos,"2,8% dos atrasos",q3_voos_cronicos_sensibilidade.csv,sim
+folga,sazonal,"4,5 quando é planejada",qc_folga_dinamica.csv,sim
+folga,no dia,"4,6 quando é aplicada",qc_folga_dinamica.csv,sim
+folga,combinada min/voo,"2,31 minutos",qc_folga_dinamica.csv,sim
+folga,combinada atraso,"de 8,0% para 7,0%",qc_folga_dinamica.csv,sim
+P4,dezembro atraso,"13,9%",qc_p4_clima_por_mes.csv,sim
+P4,"dezembro tempo normal (origem e destino, gráfico)","mostra 11,6%",qc_p4_clima_por_mes.csv,sim
+P4,dezembro cancelamento,"cancela 3,2%",q4_por_mes_do_ano.csv,sim
+P4,carga do dia,"2,8 pontos",q4_regressao_diaria.csv,sim
+P5,Azul reclamações/10 mil voos,1.175,q5_ranking_companhias.csv,sim
+P5,Azul graves/10 mil voos,443,q5_ranking_companhias.csv,sim
+P5,LATAM reclamações/10 mil voos,1.025,q5_ranking_companhias.csv,sim
+P5,LATAM graves/10 mil voos,137,q5_ranking_companhias.csv,sim
+P5,Gol reclamações/10 mil voos,782,q5_ranking_companhias.csv,sim
+P5,Gol graves/10 mil voos,233,q5_ranking_companhias.csv,sim
+P5,razão graves Azul/LATAM,"3,2 vezes",q5_ranking_companhias.csv,sim
+P5,classificador,82% das vezes,q5_cultura_teste.csv,sim
+P5,acaso,acertaria 7%,q5_cultura_teste.csv,sim
+P5,nota resolvida,"nota 4,6",q5_c5_resolucao_volume_nota.csv,sim
+P6,aeroporto explica volume,76% da diferença no volume,q6_decomposicao_companhia_aeroporto.csv,sim
+P6,companhia explica graves,companhia explica 59%,q6_decomposicao_companhia_aeroporto.csv,sim
+C1,atraso -> reclamação,"4,7% a mais",q6_c1_atraso_para_reclamacao.csv,sim
+C1,cancelamento -> reclamação,"6,2% a mais",q6_c1_atraso_para_reclamacao.csv,sim
+clima,Santos Dumont severo,16 pontos no Santos Dumont,qc_impacto_clima_aeroporto.csv,sim
+clima,Curitiba severo,só 2 em Curitiba,qc_impacto_clima_aeroporto.csv,sim
+clima,trovoada GRU/CGH/CWB,"sobe 21 pontos em GRU, 25 em Congonhas e 9 em Curitiba",qc_impacto_clima_tipo_aeroporto.csv,sim
+clima,Curitiba nevoeiro,quase todo nevoeiro e teto baixo,qc_impacto_clima_tipo_aeroporto.csv,sim
+folga,mesma quantidade,"a sazonal evita 3,8 contra 3,0 da uniforme",qc_folga_dinamica.csv,sim
+folga,vantagem com mesma quantidade,quase 30% a mais,qc_folga_dinamica.csv,sim
+valor antigo,não pode aparecer,"4,4 atrasos",-,sim
+valor antigo,não pode aparecer,"4,4 quando",-,sim
+valor antigo,não pode aparecer,"3,7 contra",-,sim
+valor antigo,não pode aparecer,"0,43 minuto",-,sim
+valor antigo,não pode aparecer,cerca de 25% mais,-,sim
+valor antigo,não pode aparecer,cerca de 45%,-,sim
+valor antigo,não pode aparecer,"2,35 minutos",-,sim
+ponte,cancelamentos,2.784,q8_ponte_aerea_motivos.csv,sim
+ponte,sem sinal,"2,8% dos voos, contra 1,1%",q8_ponte_aerea_motivos.csv,sim
+ponte,em par,83% dos cancelamentos vêm em par,q8_ponte_aerea_motivos.csv,sim
+ponte,clima estimado,clima: 47% a 56%,q9_estimativa_motivos_ponte_2024_26.csv,sim
+ponte,técnico estimado,companhia: 39% a 47%,q9_estimativa_motivos_ponte_2024_26.csv,sim
+ponte,2019 clima ponte,68% foram declarados como clima,q9_motivos_declarados_2019.csv,sim
+ponte,clima com tempo normal,33% dos cancelamentos declarados como clima,q9_consistencia_codigo_metar.csv,sim
+revisão,chegada 15 min Gol,"88,5%",q10a_criterio15_2025_cirium.csv,sim
+revisão,chegada 15 min Azul,"85,7%",q10a_criterio15_2025_cirium.csv,sim
+revisão,chegada 15 min LATAM,"83,3%",q10a_criterio15_2025_cirium.csv,sim
+revisão,cancelamento planejado,"1,5% dos cancelamentos",q10c_cancelamento_planejado.csv,sim
+revisão,MDE folga 90d,"2,1 pontos",q10d_dimensionamento_pilotos.csv,sim
+revisão,MDE GRU 90d,"5,2 pontos",q10d_dimensionamento_pilotos.csv,sim
+revisão,MDE folga voos sorteados 90d,"0,8 ponto",q10d_dimensionamento_pilotos.csv,sim
+revisão,MDE tempo em solo sorteado 90d,"2,3 pontos",q10d_dimensionamento_pilotos.csv,sim
+revisão,MDE semanas alternadas 90d,"6,9 pontos",q10d_dimensionamento_pilotos.csv,sim
+revisão,casos para +28 pontos,46 casos por grupo,q10d_dimensionamento_pilotos.csv,sim
+revisão,casos para +10 pontos,377 casos por grupo,q10d_dimensionamento_pilotos.csv,sim
+passageiros,Azul por passageiro,"| Azul | 1.175 | 443 | 11,6 | 4,4 | 76% |",q11_reclamacoes_por_passageiro.csv,sim
+passageiros,Azul pax por voo,106,q11_reclamacoes_por_passageiro.csv,sim
+passageiros,LATAM por passageiro,"| LATAM | 1.025 | 137 | 6,6 | 0,9 | 76% |",q11_reclamacoes_por_passageiro.csv,sim
+passageiros,LATAM pax por voo,158,q11_reclamacoes_por_passageiro.csv,sim
+passageiros,Gol por passageiro,"| Gol | 782 | 233 | 5,5 | 1,6 | 75% |",q11_reclamacoes_por_passageiro.csv,sim
+passageiros,Gol pax por voo,144,q11_reclamacoes_por_passageiro.csv,sim
+passageiros,Azul/LATAM graves por passageiro,"5,0 vezes por passageiro",q11_reclamacoes_por_passageiro.csv,sim
+revisão 2,minuto evitado por minuto de folga,"0,44 minuto",qc_folga_dinamica.csv,sim
+revisão 2,dez/24 tempo bom,"10,7% em dez/2024",q12a_mes_ano_tempo_bom.csv,sim
+revisão 2,dez/25 sem vendaval tempo bom,"11,2% em dez/2025",q12a_mes_ano_tempo_bom.csv,sim
+revisão 2,outros meses tempo bom,"6,3% nos meses fora do fim de ano",q12a_mes_ano_tempo_bom.csv,sim
+revisão 2,dez/24 atraso,"12,2% (2024)",q12a_mes_ano_tempo_bom.csv,sim
+revisão 2,dez/25 atraso,"15,6% (2025)",q12a_mes_ano_tempo_bom.csv,sim
+revisão 2,Azul mix LATAM,"21,4%",q12c_recuperacao_por_etapa.csv,sim
+revisão 2,Azul mix Gol,"24,1%",q12c_recuperacao_por_etapa.csv,sim
+revisão 2,teto tempo em solo,"a tarde de GRU atrasaria 6,6 pontos",q12d_piloto_tempo_em_solo.csv,sim
+revisão 2,metade do teto,"3,3 pontos",q12d_piloto_tempo_em_solo.csv,sim
+revisão 2,MDE sorteio por dia,"sortear dias inteiros, 6,3",q12d_piloto_tempo_em_solo.csv,sim
+revisão 2,minutos por voo realizado,"5,7 minutos por voo realizado",voos (base),sim
+revisão 2,taxa tarde GRU,"taxa de 11,7% na tarde de GRU",q12d_piloto_tempo_em_solo.csv,sim
+metas,temas recorrentes a menos por ano,"Cerca de 4,7 mil reclamações a menos por ano na Azul, 4,2 mil na LATAM e 0,6 mil na Gol",q7_recorrencias_excesso.csv,sim
+metas,LATAM CNF,317 reclamações por 10 mil movimentos | 250 | **180**,q6_pares_companhia_aeroporto.csv,sim
+metas,Gol VCP,138 reclamações por 10 mil movimentos | 90 | **43**,q6_pares_companhia_aeroporto.csv,sim
+metas,Gol VCP vezes,"3,2 vezes",q6_pares_companhia_aeroporto.csv,sim
+C1,razão operacionais,"1,3 vez a reclamação de atrasar nas reclamações operacionais",q6_c1_atraso_para_reclamacao.csv,sim
+C1,razão todas com aeroporto,"1,7 vez em todas as reclamações que citam aeroporto",q6_c1_atraso_para_reclamacao.csv,sim
+P1,GRU com tempo bom,"+3,2 só com tempo bom",qc_p1_efeito_aeroporto_sem_clima.csv,sim
+metas,bagagem extraviada Gol/Azul,| 37% / 56% | 50% / 60% | **64%** |,q7_resolucao_por_tema.csv,sim
+revisão 3,dezembros sem vendaval tempo bom,"10,9%, contra 6,3%",q12a_mes_ano_tempo_bom.csv,sim
+revisão 3,ponte melhor caso por ano,cerca de 430 cancelamentos a menos por ano,q12f_ponte_premio.csv,sim
+revisão 3,ponte meta 12 meses,"1,9% 12 meses após a decisão da 2b (cerca de 220 cancelamentos",q12f_ponte_premio.csv,sim
+revisão 3,efeito esperado folga CGH VCP (só sazonal),"queda de 1,1 ponto",qc_folga_local_cgh_vcp.csv,sim
+revisão 3,com a reserva junto,"a queda seria de 1,4 ponto",qc_folga_local_cgh_vcp.csv,sim
+revisão 3,folga por companhia 90 e 180,"quedas de 1,2 a 1,6 ponto em 90 dias e de 0,8 a 1,1 ponto em 180",q10d_dimensionamento_pilotos.csv,sim
+revisão 3,GRU tarde por companhia,"de 3,0 a 3,2 pontos em 90 dias e de 2,1 a 2,2 em 180",q10d_dimensionamento_pilotos.csv,sim
+revisão 3,voos com erro de data,Há 126 voos com a data,q12g_erros_de_data.csv,sim
+revisão 3,última semana de dezembro,"8,0% nos dois anos de 24 a 31/12",q12e_dezembro_por_semana.csv,sim
+revisão 3,1ª semana dez 2024,"14,2% e 14,0% de 1 a 7/12",q12e_dezembro_por_semana.csv,sim
+ponte,razão ponte x resto das três grandes,"cancela 2,4 vezes mais que o resto da rede das três grandes",voos (base),sim
+ponte,taxas ponte x resto,"(3,7% contra 1,5%)",voos (base),sim

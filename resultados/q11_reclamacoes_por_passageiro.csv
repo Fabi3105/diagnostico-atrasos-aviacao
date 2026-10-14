@@ -1,0 +1,15 @@
+﻿empresa,companhia,grupo,reclamacoes,graves,por_10mil_voos,graves_por_10mil_voos,resolucao_pct,pax,decolagens,por_10mil_passageiros,graves_por_10mil_passageiros,passageiros_por_voo
+PTB,Voepass,brasileira,464.0,201.0,738.15,319.76,7.73,311620.0,5963.0,14.89,6.45,52.26
+AZU,Azul,brasileira,48743.0,18372.0,1174.9,442.84,76.41,41917719.0,395645.0,11.63,4.38,105.95
+GLO,Gol,brasileira,24270.0,7231.0,781.89,232.96,74.64,43936770.0,304575.0,5.52,1.65,144.26
+TAM,LATAM,brasileira,38564.0,5162.0,1025.02,137.21,75.72,58362796.0,369412.0,6.61,0.88,157.99
+AVA,Avianca - Voos internacionais,estrangeira,2414.0,388.0,3984.81,640.48,29.57,947398.0,6481.0,25.48,4.1,146.18
+ARG,Aerolíneas Argentinas,estrangeira,941.0,350.0,848.82,315.71,21.28,1366143.0,9809.0,6.89,2.56,139.27
+AAL,American Airlines,estrangeira,1493.0,340.0,3969.69,904.01,24.71,1554713.0,6201.0,9.6,2.19,250.72
+DAL,Delta Air Lines,estrangeira,533.0,133.0,1407.82,351.29,36.6,883644.0,3734.0,6.03,1.51,236.65
+SKU,Sky Airline,estrangeira,813.0,153.0,2478.66,466.46,38.59,1052386.0,7206.0,7.73,1.45,146.04
+UAL,United Airlines,estrangeira,675.0,145.0,3221.96,692.12,28.15,1109473.0,4823.0,6.08,1.31,230.04
+TAP,TAP Air Portugal,estrangeira,2968.0,333.0,2228.9,250.08,40.14,2889053.0,13243.0,10.27,1.15,218.16
+CMP,Copa Airlines,estrangeira,1425.0,191.0,2979.3,399.33,27.31,1686822.0,11527.0,8.45,1.13,146.34
+JAT,JetSMART Airlines - Chile,estrangeira,452.0,70.0,1073.63,166.27,16.84,725952.0,4281.0,6.23,0.96,169.58
+ACA,Air Canada,estrangeira,369.0,33.0,1598.09,142.92,10.17,553228.0,2345.0,6.67,0.6,235.92

@@ -1,0 +1,5 @@
+﻿indicador,R2_so_hora_mes,R2_completo,parte_companhia,parte_aeroporto,companhia_pct_do_explicado_por_ambos
+atraso > 30 min,0.2496,0.339,0.0315,0.0579,35.2791
+cancelamento,0.0773,0.6271,0.4247,0.1251,77.2403
+"atraso > 30 min (só Azul, LATAM e Gol)",0.2695,0.3384,0.0096,0.0593,13.9687
+"cancelamento (só Azul, LATAM e Gol)",0.2132,0.4183,0.0401,0.165,19.5372

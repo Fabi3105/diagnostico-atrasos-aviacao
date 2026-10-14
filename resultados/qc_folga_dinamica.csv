@@ -1,0 +1,10 @@
+﻿estrategia,minutos_de_folga_por_voo,atraso30_pct,atrasos_evitados_no_2o_ano,evitados_por_mil_minutos,minutos_de_atraso_evitados_por_minuto_de_folga
+hoje (2º ano),0.0,7.996,0,,
+folga uniforme de 2 min,2.0,7.376,4611,3.099,0.377
+folga uniforme de 3 min,3.0,7.099,6667,2.987,0.366
+folga uniforme de 5 min,5.0,6.57,10608,2.852,0.345
+folga sazonal planejada (aeroporto x mês x faixa) x1,1.536,7.302,5163,4.518,0.453
+folga sazonal planejada (aeroporto x mês x faixa) x2,3.082,6.815,8785,3.831,0.393
+"folga no dia, só com tempo ruim x1",0.771,7.638,2658,4.635,0.452
+"folga no dia, só com tempo ruim x2",1.562,7.381,4571,3.933,0.391
+sazonal x1 + no dia x1,2.313,6.987,7506,4.363,0.441

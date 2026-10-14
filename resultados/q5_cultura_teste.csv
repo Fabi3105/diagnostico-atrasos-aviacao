@@ -1,0 +1,9 @@
+﻿medida,valor
+meses-companhia analisados,180.0
+companhias,14.0
+acerto do classificador (companhia pelo perfil do mês) %,81.667
+"acerto esperado ao acaso (permutação, média) %",6.914
+acerto máximo nas permutações %,13.889
+valor-p da permutação,0.005
+correlação média entre meses da mesma companhia,0.774
+correlação média entre meses de companhias diferentes,0.31

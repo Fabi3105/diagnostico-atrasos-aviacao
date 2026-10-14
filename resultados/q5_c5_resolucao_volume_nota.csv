@@ -1,0 +1,8 @@
+﻿medida,correlacao
+entre companhias: resolução x nota,0.994
+entre companhias: reclamações por voo x nota,-0.246
+entre companhias: reclamações por voo x resolução,-0.251
+meses das 3 grandes: resolução x nota,0.988
+meses das 3 grandes: reclamações por voo x nota,-0.095
+nota média quando resolvida,4.6
+nota média quando não resolvida,1.336

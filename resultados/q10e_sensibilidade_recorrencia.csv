@@ -1,0 +1,19 @@
+﻿vezes_o_mercado,fracao_dos_meses,companhia,temas_recorrentes
+1.2,0.6,Azul,"Alteração pela empresa: alternativas, Alteração pela empresa: assistência, Alteração pela empresa: outros, Alteração pelo passageiro, Alternativas em atraso/cancelamento/preterição, Bagagem extraviada, Itens opcionais, Outros, Preterição (overbooking)"
+1.2,0.6,LATAM,"Alteração pela empresa: aviso, Alteração pela empresa: outros, Oferta e compra, Reembolso"
+1.2,0.6,Gol,"Assistência material no atraso, Check-in e embarque, Comunicação sobre atraso/cancelamento, Programa de fidelidade"
+1.2,0.75,Azul,"Alteração pela empresa: alternativas, Alteração pela empresa: assistência, Alteração pela empresa: outros, Alteração pelo passageiro, Bagagem extraviada, Outros, Preterição (overbooking)"
+1.2,0.75,LATAM,"Alteração pela empresa: aviso, Oferta e compra, Reembolso"
+1.2,0.75,Gol,"Assistência material no atraso, Check-in e embarque, Programa de fidelidade"
+1.2,0.9,Azul,"Alteração pela empresa: alternativas, Bagagem extraviada, Preterição (overbooking)"
+1.2,0.9,LATAM,"Alteração pela empresa: aviso, Oferta e compra"
+1.2,0.9,Gol,"Assistência material no atraso, Check-in e embarque"
+1.5,0.6,Azul,"Alteração pela empresa: alternativas, Bagagem extraviada, Preterição (overbooking)"
+1.5,0.6,LATAM,"Alteração pela empresa: aviso, Oferta e compra"
+1.5,0.6,Gol,Assistência material no atraso
+1.5,0.75,Azul,"Alteração pela empresa: alternativas, Bagagem extraviada, Preterição (overbooking)"
+1.5,0.75,LATAM,"Alteração pela empresa: aviso, Oferta e compra"
+1.5,0.75,Gol,Assistência material no atraso
+1.5,0.9,Azul,
+1.5,0.9,LATAM,"Alteração pela empresa: aviso, Oferta e compra"
+1.5,0.9,Gol,

@@ -1,0 +1,16 @@
+﻿classe,ponte aérea CGH-SDU,resto da rede (aeroportos com METAR)
+sem sinal observável,50.79,47.68
+tempo ruim,38.4,40.39
+evento no aeroporto,9.45,7.61
+fim do dia (após 21h),1.36,4.32
+cancelamentos,2784.0,19512.0
+taxa_de_cancelamento_pct,3.73,1.45
+taxa_canc_evento no aeroporto_pct,55.25,36.32
+parte_dos_voos_evento no aeroporto_pct,0.64,0.3
+taxa_canc_tempo ruim_pct,4.77,2.06
+parte_dos_voos_tempo ruim_pct,30.03,28.34
+taxa_canc_fim do dia (após 21h)_pct,3.2,0.81
+parte_dos_voos_fim do dia (após 21h)_pct,1.59,7.72
+taxa_canc_sem sinal observável_pct,2.8,1.08
+parte_dos_voos_sem sinal observável_pct,67.74,63.64
+cancelamentos_em_par_ida_e_volta_pct,83.08,52.33

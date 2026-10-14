@@ -1,0 +1,4 @@
+﻿fonte,coeficiente,margem_baixa,margem_alta,efeito_de_10pp_na_manha_sobre_a_tarde_pp,efeito_padronizado_pp
+manhã da própria companhia no mesmo aeroporto,0.178,0.157,0.199,1.784,2.228
+manhã das outras companhias no mesmo aeroporto,0.073,0.048,0.093,0.726,0.766
+manhã da própria companhia nos outros aeroportos,0.794,0.664,0.927,7.942,3.46

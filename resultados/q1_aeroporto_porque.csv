@@ -1,0 +1,4 @@
+﻿medida,correlacao_com_efeito_atraso,correlacao_ano1_ano2_efeito_aeroporto
+log(voos por dia),0.13,0.756
+partidas na hora de pico,0.159,0.756
+parte da maior companhia,0.292,0.756

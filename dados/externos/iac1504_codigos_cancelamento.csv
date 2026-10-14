@@ -1,0 +1,12 @@
+codigo,descricao,grupo
+XA,Cancelamento programado: feriado nacional,programado/autorizado
+XB,Cancelamento autorizado,programado/autorizado
+XR,Cancelamento de voo em código compartilhado,programado/autorizado
+XL,Falta de passageiros com bilhete (só regionais),comercial
+XN,Cancelamento por motivos técnico-operacionais,técnico-operacional (companhia)
+XI,Aeroporto de origem fechado,aeroporto fechado
+XJ,Aeroporto de destino fechado,aeroporto fechado
+XM,Conexão/retorno: voo de ida cancelado por aeroporto fechado,aeroporto fechado
+XO,Aeroporto de origem abaixo dos mínimos (meteorologia),clima
+XT,Aeroporto de destino abaixo dos mínimos (meteorologia),clima
+XS,Conexão/retorno: voo de ida cancelado por meteorologia,clima

@@ -1,0 +1,5 @@
+﻿cenario,chegada_atraso30_pct,duracao_prevista_media_min
+hoje,7.68,113.0
+duração prevista = percentil 50 da real,9.23,108.78
+duração prevista = percentil 75 da real,7.48,113.7
+duração prevista = percentil 85 da real,6.59,116.87

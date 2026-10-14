@@ -1,0 +1,11 @@
+﻿R2_companhia_e_aeroporto,parte_companhia,parte_aeroporto,companhia_pct_do_explicado,indicador
+0.5948,0.1446,0.4502,24.3065,todas as reclamações com aeroporto
+0.7137,0.4241,0.2897,59.4145,reclamações graves
+0.7659,0.4591,0.3069,59.9364,tema: Bagagem extraviada
+0.7732,0.2921,0.4812,37.7744,tema: Bagagem avariada
+0.4465,0.2431,0.2034,54.44,tema: Alteração pela empresa: alternativas
+0.6786,0.3595,0.3191,52.9746,tema: Alternativas em atraso/cancelamento/preterição
+0.6961,0.5799,0.1162,83.3012,tema: Assistência material no atraso
+0.6313,0.3212,0.3102,50.8693,tema: Check-in e embarque
+0.5378,0.2577,0.2801,47.9094,"tema: Execução do voo: outros (atraso, conexão, desembarque)"
+0.839,0.6287,0.2103,74.9302,tema: Preterição (overbooking)

@@ -1,0 +1,3 @@
+﻿origem,iata,hora_local,meses,meses_acima,recorrente,voos,atraso30_pct,minutos_atraso_mil,mercado_na_hora_pct,parte_dos_minutos_do_mercado_pct
+SBGR,GRU,22,24,22,True,16889,19.16,192.62,11.51,2.21
+SBUL,UDI,14,16,12,True,851,14.81,8.66,8.31,0.1

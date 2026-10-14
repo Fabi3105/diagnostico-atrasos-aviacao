@@ -1,0 +1,8 @@
+﻿medida,correlacao_com_atraso_mensal
+ocupação,0.19739895995043075
+bagagem por passageiro,0.32861602285561203
+passageiros por voo,0.2813159665109193
+regressão: +1 ponto de ocupação -> pontos de atraso,0.15722379515267765
+  margem,-0.07 a 0.39
+regressão: +1 kg de bagagem por passageiro -> pontos de atraso,1.492131981032349
+  margem,0.45 a 2.64

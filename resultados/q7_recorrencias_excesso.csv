@@ -1,0 +1,12 @@
+﻿companhia,tema,gravidade,vezes_o_mercado,reclamacoes,reclamacoes_a_mais_16_meses,por_ano
+Azul,Preterição (overbooking),alta,2.27,1321,739.0,554.0
+Azul,Alteração pela empresa: alternativas,alta,1.7,10740,4422.0,3316.0
+Azul,Bagagem extraviada,alta,1.67,2769,1111.0,833.0
+Azul,Alteração pelo passageiro,baixa,1.37,12830,3465.0,2599.0
+Azul,Alteração pela empresa: outros,média,1.34,3810,967.0,725.0
+Gol,Assistência material no atraso,alta,1.8,784,348.0,261.0
+Gol,Check-in e embarque,média,1.59,1186,440.0,330.0
+LATAM,Alteração pela empresa: aviso,média,2.27,1178,659.0,494.0
+LATAM,Oferta e compra,baixa,2.01,9743,4896.0,3672.0
+LATAM,Alteração pela empresa: outros,média,1.3,3279,757.0,568.0
+LATAM,Reembolso,média,1.26,4312,890.0,668.0

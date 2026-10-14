@@ -1,0 +1,18 @@
+# Dados brutos e bancos locais ficam fora do GitHub (o README explica onde baixar)
+dados/*
+!dados/externos/
+*.duckdb
+*.duckdb.wal
+*.sqlite
+__pycache__/
+*.pyc
+# Pastas de trabalho e notas internas
+_*
+CONCLUSOES.md
+# Arquivos externos grandes: baixados das fontes (ver dados/externos/LINKS_METAR.md e o README)
+dados/externos/*.csv
+!dados/externos/iac1504_codigos_cancelamento.csv
+!dados/externos/vra2019_contagem_rotas.csv
+!dados/FONTES.md
+
+_publicar_github.bat

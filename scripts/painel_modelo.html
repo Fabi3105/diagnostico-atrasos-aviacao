@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voos e reclamações: painel</title>
+<meta name="description" content="Painel do estudo de atrasos, cancelamentos e reclamações na aviação doméstica (dados abertos da ANAC, 2024-2026), do ponto de vista de uma companhia aérea.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f2f4f7; --surface:#ffffff; --ink:#0f1a2a; --ink-2:#465265; --ink-3:#768296;
+  --line:#dbe0e8; --grid:#e8ecf1; --soft:#eef2f8;
+  --navy:#0a1628; --navy-2:#13294b; --board:#060e1b; --board-line:#1b2a42;
+  --amber:#ffb81c; --amber-ink:#8a5a00; --chip:#0a1628;
+  --metA:#1c5cab; --metB:#d0453f; --rede:#9aa5b5;
+  --azul:#2a78d6; --latam:#8e3fa6; --gol:#eb6834;
+  --f-cond:"IBM Plex Sans Condensed",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b111b; --surface:#131c29; --ink:#e9eef5; --ink-2:#b2bdcc; --ink-3:#7f8b9c;
+  --line:#243042; --grid:#1d2734; --soft:#18253a;
+  --metA:#3987e5; --metB:#e66767; --rede:#5b6676;
+  --azul:#3987e5; --latam:#a565c0; --gol:#d95926; --amber-ink:#ffcf66; --chip:#1f3760; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0b111b; --surface:#131c29; --ink:#e9eef5; --ink-2:#b2bdcc; --ink-3:#7f8b9c;
+  --line:#243042; --grid:#1d2734; --soft:#18253a;
+  --metA:#3987e5; --metB:#e66767; --rede:#5b6676;
+  --azul:#3987e5; --latam:#a565c0; --gol:#d95926; --amber-ink:#ffcf66; --chip:#1f3760; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:128px}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-body);-webkit-font-smoothing:antialiased}
+a{color:var(--metA)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+
+/* topo: painel de partidas */
+header.hero{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-2) 100%);color:#fff;padding:28px 0 32px;position:relative;overflow:hidden}
+header.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:repeating-linear-gradient(90deg,var(--amber) 0 36px,transparent 36px 60px);opacity:.85}
+.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:28px;align-items:start}
+@media (max-width:920px){.hero-grid{grid-template-columns:1fr}}
+.kicker{font:600 12px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
+.hero h1{font:700 clamp(26px,4vw,40px)/1.08 var(--f-cond);margin:12px 0 10px;letter-spacing:-.005em}
+.hero p{margin:0;color:#c9d6ea;max-width:620px}
+.hero .meta{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px 10px;font-size:13px;color:#a9bad4;align-items:center}
+.hero .meta a{color:#fff;text-decoration:none;border:1px solid #34507c;border-radius:6px;padding:4px 10px;font-weight:500}
+.hero .meta a:hover{border-color:var(--amber);color:var(--amber)}
+.board{background:var(--board);border:1px solid var(--board-line);border-radius:10px;padding:12px 14px 6px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.board .bh{display:flex;justify-content:space-between;gap:10px;font:600 11px/1.3 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--amber);padding-bottom:9px;border-bottom:1px solid var(--board-line)}
+.board .bh span:last-child{color:#7f93b3;letter-spacing:.04em;text-transform:none;font-weight:500;text-align:right}
+.brow{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(112px,max-content);gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--board-line)}
+.brow:last-child{border-bottom:0}
+@media (max-width:520px){.brow{grid-template-columns:1fr auto}.brow .st{grid-column:1 / -1;justify-self:start}}
+.brow .lbl{min-width:0;font:500 12.5px/1.25 var(--f-mono);color:#c9d6ea;text-transform:uppercase;letter-spacing:.03em}
+.brow .lbl small{display:block;color:#6f83a3;text-transform:none;letter-spacing:0;font-size:11.5px}
+.flap{font:600 clamp(18px,2vw,24px)/1 var(--f-mono);color:var(--amber);font-variant-numeric:tabular-nums;background:linear-gradient(180deg,#101c30 0 49%,#060e1b 49% 51%,#0d182a 51%);border-radius:4px;padding:6px 8px;letter-spacing:.02em;white-space:nowrap;text-align:right;min-width:112px}
+.st{font:600 11px/1.2 var(--f-mono);letter-spacing:.04em;text-transform:uppercase;padding:6px 7px;border-radius:4px;text-align:center;white-space:nowrap;max-width:170px;overflow:hidden;text-overflow:ellipsis}
+.st.ok{background:#0e3b2b;color:#53e0a4}.st.warn{background:#3d2a05;color:#ffc24d}.st.neu{background:#18263d;color:#9fb3d3}
+
+/* barra fixa */
+.bar{position:sticky;top:0;z-index:6;background:color-mix(in srgb,var(--bg) 93%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.tabs{display:flex;gap:2px;overflow-x:auto;padding:8px 0 4px;scrollbar-width:thin}
+.tabs a{flex:none;text-decoration:none;color:var(--ink-2);font:500 13px var(--f-body);padding:5px 7px;border-radius:6px}
+.tabs a:hover{background:var(--soft);color:var(--ink)}
+.tabs a b{font:600 10.5px var(--f-mono);color:var(--ink-3);margin-right:4px}
+.estreito{max-width:760px}
+.tabs .sp{flex:1}
+.themebtn{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:6px;padding:4px 10px;font:500 13px var(--f-body);cursor:pointer}
+.filtros{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;padding:3px 0 10px;font-size:13px;color:var(--ink-2)}
+.filtros .fl{font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.filtros label{display:flex;gap:6px;align-items:center}
+.filtros select,.filtros button{font:500 13px var(--f-body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:5px 8px;max-width:180px}
+.filtros button{cursor:pointer}
+
+/* seções */
+section{padding:30px 0 4px}
+.sh{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.code{font:600 12px/1 var(--f-mono);letter-spacing:.08em;background:var(--chip);color:var(--amber);padding:6px 8px;border-radius:4px}
+h2{font:700 25px/1.15 var(--f-cond);margin:0}
+.tag{display:inline-block;font:500 10.5px/1 var(--f-mono);letter-spacing:.05em;text-transform:uppercase;padding:4px 7px;border-radius:4px}
+.tag.din{background:var(--soft);color:var(--metA)}
+.tag.fixo{background:var(--grid);color:var(--ink-3)}
+.tag.rel{background:transparent;border:1px solid var(--line);color:var(--ink-3)}
+.sub{color:var(--ink-2);margin:2px 0 14px;max-width:860px}
+.leitura{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:6px 0 14px}
+@media (max-width:860px){.leitura{grid-template-columns:1fr}}
+.leitura div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px}
+.leitura div.acao{border-left:4px solid var(--amber)}
+.leitura h4{margin:0 0 4px;font:600 11px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.leitura div.acao h4{color:var(--amber-ink)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.card .k{font-size:12.5px;color:var(--ink-2);min-height:20px}
+.card .v{font:700 26px/1.1 var(--f-cond);margin:4px 0 2px;font-variant-numeric:tabular-nums}
+.card .n{font-size:12px;color:var(--ink-3)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:14px}
+.panel h3{font:600 15px/1.3 var(--f-body);margin:0 0 2px}
+.panel .nota{font-size:12.5px;color:var(--ink-3);margin:0 0 10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:860px){.grid2{grid-template-columns:1fr}}
+svg{display:block;width:100%;height:auto}
+svg text{fill:var(--ink-2);font:12px var(--f-body)}
+svg text.v{fill:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.leg{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-2);margin-top:8px}
+.leg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.leg i.l{height:3px;width:14px;vertical-align:3px}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.iata{display:inline-block;font:600 12px/1 var(--f-mono);letter-spacing:.06em;background:var(--chip);color:var(--amber);padding:4px 6px;border-radius:3px}
+.mini{display:inline-block;height:8px;border-radius:0 4px 4px 0;background:var(--metA);vertical-align:middle}
+.achados{display:grid;gap:8px}
+.ach{display:grid;grid-template-columns:42px 1.3fr 1fr;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;align-items:start}
+@media (max-width:760px){.ach{grid-template-columns:36px 1fr}.ach .fz{grid-column:2}}
+.ach .nr{font:700 22px/1 var(--f-mono);color:var(--amber-ink)}
+.ach b{display:block;margin-bottom:2px;color:var(--ink)}
+.ach .fz{font-size:14px;border-left:3px solid var(--amber);padding-left:10px}
+.ach .fz span{display:block;font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--amber-ink)}
+.ach .tx{font-size:14px;color:var(--ink-2)}
+.pilotos{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:920px){.pilotos{grid-template-columns:1fr}}
+.pil{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.pil .ph{background:var(--chip);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.pil .ph b{font:600 15px var(--f-cond)}
+.pil .ph span{font:600 11px var(--f-mono);color:var(--amber);letter-spacing:.06em;white-space:nowrap}
+.pil dl{margin:0;padding:10px 14px 12px;font-size:13.5px;flex:1}
+.pil dt{font:600 10.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-top:8px}
+.pil dd{margin:2px 0 0}
+.pil .mde{margin:0 14px 14px;background:var(--soft);border-radius:6px;padding:8px 10px;font-size:13px}
+.pil .mde b{font:600 17px var(--f-mono);color:var(--ink)}
+.vazio{color:var(--ink-3);font-size:13px;padding:10px 0}
+.decisao{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;margin-top:12px;background:var(--chip);color:#e6edf7;border-radius:10px;padding:14px 16px;font-size:14px}
+.decisao span{display:block;font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:3px}
+@media (max-width:760px){.decisao{grid-template-columns:1fr}}
+.dlt{font:500 11.5px var(--f-mono);margin-left:6px}.dlt.up{color:#ffc24d}.dlt.dn{color:#53e0a4}
+ul.lista{margin:0;padding-left:20px}ul.lista li{margin:0 0 6px}
+#tip{position:fixed;pointer-events:none;z-index:20;background:var(--navy);color:#fff;font:500 12.5px/1.4 var(--f-body);padding:7px 9px;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,.25);max-width:260px;display:none}
+#tip b{color:var(--amber)}
+details.dados{margin-top:8px;font-size:12.5px}
+details.dados summary{cursor:pointer;color:var(--metA);font:600 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;width:max-content}
+details.dados table{margin-top:6px;font-size:12.5px}
+@media (max-width:520px){.bar{position:static}.hero p{display:none}.board .brow:nth-child(1),.board .brow:nth-child(4){display:none}.hero h1{font-size:24px}.hero .meta{margin-top:10px}
+#boardRows{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.board .brow{display:block;border:0;padding:6px 0}.board .brow .st,.board .lbl small{display:none}.board .lbl{font-size:10.5px;min-height:26px}.flap{font-size:18px;min-width:0;text-align:left;margin-top:4px}.board .bh span:last-child{display:none}header.hero{padding:20px 0 24px}}
+footer{color:var(--ink-3);font-size:12.5px;padding:26px 0 40px;border-top:1px solid var(--line);margin-top:28px}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap hero-grid">
+  <div>
+    <div class="kicker">Estudo independente · dados abertos da ANAC</div>
+    <h1>Atrasos, cancelamentos e reclamações na aviação doméstica: onde agir</h1>
+    <p>Onde o atraso nasce, como ele se espalha pela malha, quanto dele a companhia controla e como vira reclamação. Visão de gestão de operações e atendimento de uma companhia aérea, com todos os voos regulares de set/2024 a ago/2026 e as reclamações do consumidor.gov.br de 2024 e 2025.</p>
+    <div class="meta"><span>Fabian Aliatti Mayer, com apoio de IA</span><a href="RELATORIO.pdf">Relatório (PDF)</a><a href="RELATORIO.md">Relatório (texto)</a></div>
+  </div>
+  <div class="board" aria-live="polite">
+    <div class="bh"><span>Partidas · doméstico regular</span><span id="boardSub"></span></div>
+    <div id="boardRows"></div>
+  </div>
+</div></header>
+
+<div class="bar"><div class="wrap">
+  <nav class="tabs" aria-label="Seções">
+    <a href="#resumo"><b>00</b>Resumo</a><a href="#origem"><b>01</b>Onde nasce</a><a href="#malha"><b>02</b>Como se espalha</a><a href="#folga"><b>03</b>Folga</a><a href="#picos"><b>04</b>Picos do ano</a><a href="#ponte"><b>05</b>Ponte aérea</a><a href="#reclamacoes"><b>06</b>Reclamações</a><a href="#solucoes"><b>07</b>Soluções e pilotos</a><a href="#metas"><b>08</b>Metas</a><a href="#ler"><b>09</b>Como ler</a>
+    <span class="sp"></span><button class="themebtn" id="tema" type="button" aria-label="Alternar tema claro ou escuro">Tema</button>
+  </nav>
+  <div class="filtros">
+    <span class="fl">Filtros</span>
+    <label>De <select id="fIni" aria-label="Mês inicial"></select></label>
+    <label>até <select id="fFim" aria-label="Mês final"></select></label>
+    <label>Companhia <select id="fCia" aria-label="Companhia"></select></label>
+    <label>Aeroporto <select id="fAer" aria-label="Aeroporto de origem"></select></label>
+    <button id="fLimpar" type="button">Limpar</button>
+  </div>
+</div></div>
+
+<main class="wrap">
+  <div class="decisao" style="margin-top:22px"><div><span>Decisão pedida</span>Aprovar três pilotos com sorteio de voos ou casos, calculados para uma companhia só: folga sazonal em CGH e VCP, resolução no 1º contato e tempo em solo na tarde de GRU (seção 07 do painel; seção 3 do relatório).</div><div><span>Ordem</span>Soluções 1, 2a e 3 já · 4 a 6 em piloto · 7: aprovar até nov (dez/26 = linha de base; plano em dez/27) · 2b após a 2a · 8 institucional</div></div>
+
+<section id="resumo">
+  <div class="sh"><span class="code">00</span><h2>Cinco achados e o que fazer</h2><span class="tag rel">sumário</span><span class="tag fixo">Fixo</span></div>
+  <p class="sub">O mesmo sumário do relatório. Cada achado aponta para uma solução numerada (seção 07 do painel; seção 2 do relatório).</p>
+  <div class="achados">
+    <div class="ach"><div class="nr">1</div><div class="tx"><b>O atraso nasce em poucos aeroportos e se espalha pela malha da própria companhia.</b>Da variação que se consegue explicar, a maior fatia vem da hora e do mês; da parte que muda entre companhias e aeroportos, o aeroporto explica 86%. GRU e Congonhas somam 27% dos minutos. A partida atrasa 2,6% com as chegadas anteriores no horário e 29,1% quando a maioria chegou atrasada.</div><div class="fz"><span>O que fazer</span>Proteger o tempo em solo nesses aeroportos (solução 6).</div></div>
+    <div class="ach"><div class="nr">2</div><div class="tx"><b>Os horários têm pouca folga, e quem tem mais folga recupera mais.</b>Dos voos que saem com mais de 15 min de atraso, 26% dos da Gol chegam até 15 min do horário; na Azul, 14%. Com a mesma quantidade de minutos, a folga direcionada evita quase 30% mais atrasos que a folga igual para todos.</div><div class="fz"><span>O que fazer</span>Folga por aeroporto, mês e horário, e reserva nos dias de tempo ruim (soluções 4 e 5). Simulação: partidas atrasadas de 8,0% (2º ano) para 7,0%, contra o horário novo.</div></div>
+    <div class="ach"><div class="nr">3</div><div class="tx"><b>O clima pesa, mas não explica o principal.</b>Cerca de 14% dos atrasos estão ligados a tempo ruim. Com tempo bom, GRU continua o pior aeroporto, e o fim de ano é o pior período: com tempo bom, dezembro atrasou 10,9% (sem o vendaval), contra 6,3% nos meses fora do fim de ano, com pico de 1 a 23/12.</div><div class="fz"><span>O que fazer</span>Plano para 1 a 23 de dezembro (solução 7) e agenda com aeroporto e controle de tráfego para GRU (solução 8).</div></div>
+    <div class="ach"><div class="nr">4</div><div class="tx"><b>Um cancelamento se associa a só 1,3 a 1,7 vez as reclamações de um atraso, mas a ponte aérea cancela 2,4 vezes mais que o resto da rede das três grandes.</b>Quando cancelar evita atrasar dois ou mais voos, tende a gerar menos reclamações. Sem tempo ruim, sem incidente e antes das 21h, a ponte cancela 2,8%, contra 1,1%.</div><div class="fz"><span>O que fazer</span>Cruzar já os cancelamentos com o registro do centro de controle (2a); se o motivo técnico-operacional se confirmar, reserva de avião e tripulação (2b).</div></div>
+    <div class="ach"><div class="nr">5</div><div class="tx"><b>A nota depende quase só de resolver, e cada companhia repete os próprios problemas.</b>Resolvida, nota 4,6; não resolvida, 1,3. A Azul tem 3,2 vezes mais reclamações graves por voo que a LATAM (5,0 vezes por passageiro).</div><div class="fz"><span>O que fazer</span>Resolver no primeiro contato copiando a melhor do mercado e atacar a origem dos temas recorrentes (soluções 1 e 3).</div></div>
+  </div>
+  <div class="panel tablewrap" style="margin-top:12px"><h3>As três grandes lado a lado <span class="tag din">Atraso e cancelamento respondem a período e aeroporto</span></h3><p class="nota">Partidas com atraso &gt; 30 min e cancelamento no período e aeroporto escolhidos; A15 de 2025 e reclamações por 10 mil passageiros são fixos (relatório).</p><table id="tCias"></table></div>
+</section>
+
+<section id="origem">
+  <div class="sh"><span class="code">01</span><h2>Onde o atraso nasce</h2><span class="tag rel">relatório 1.1</span><span class="tag din">Tabela responde a período e companhia</span></div>
+  <div class="leitura">
+    <div><h4>O que os dados mostram</h4>Da parte do atraso que muda entre companhias e aeroportos, o aeroporto explica 86% (79% só com tempo bom). GRU acrescenta +3,7 pontos (+3,2 com tempo bom). GRU e Congonhas somam 27% dos minutos de atraso do país. Tempo severo leva o atraso de 7,0% para 17,4%.</div>
+    <div><h4>Por que importa</h4>A companhia não muda o aeroporto, mas decide quanto do atraso que nasce ali segue para o resto da malha. Com trovoada ou chuva forte, GRU sobe 21 pontos e Congonhas 25, contra 9 em Curitiba: há espaço para preparar São Paulo para o tempo convectivo.</div>
+    <div class="acao"><h4>O que fazer</h4>Concentrar a proteção da operação em GRU, Congonhas, Confins e Viracopos (soluções 5 e 6) e levar uma agenda ao aeroporto e ao controle de tráfego (solução 8).</div>
+  </div>
+  <div class="panel tablewrap"><h3>Os 15 aeroportos com mais minutos de atraso</h3><p class="nota">Aeroporto de origem. A barra mostra a parte dos minutos de atraso do país no período e na companhia escolhidos.</p><table id="tAer"></table></div>
+  <div class="panel"><h3>Atraso com tempo normal e com tempo severo, nos 10 aeroportos com mais voos <span class="tag fixo">Fixo</span></h3><p class="nota">Partidas com atraso acima de 30 minutos (%). Tempo severo: trovoada no aeroporto, chuva forte, visibilidade baixa, teto baixo ou rajada forte. O número à direita é o aumento em pontos.</p><div id="gClima" class="estreito"></div>
+  <div class="leg"><span><i style="background:var(--rede)"></i>tempo normal</span><span><i style="background:var(--metB)"></i>tempo severo</span></div></div>
+</section>
+
+<section id="malha">
+  <div class="sh"><span class="code">02</span><h2>Como o atraso se espalha pela malha</h2><span class="tag rel">relatório 1.2</span><span class="tag din">Curva do dia responde aos filtros</span></div>
+  <div class="leitura">
+    <div><h4>O que os dados mostram</h4>O atraso vai de 2,5% às 4h para cerca de 11% no fim da tarde. Ele acompanha a operação da própria companhia: com a maioria das chegadas anteriores atrasada, a partida atrasa 29,1%.</div>
+    <div><h4>Por que importa</h4>O problema é a escala entre um voo e o seguinte, e não um horário ou o primeiro voo do dia. A base pública não traz a matrícula do avião; a companhia pode medir a propagação exata com os dados internos de rotação.</div>
+    <div class="acao"><h4>O que fazer</h4>Folga mínima de solo, tripulação que segue com o avião, avião de reserva e troca de aeronave pelo centro de controle (solução 6), começando pelo piloto na tarde de GRU.</div>
+  </div>
+  <div class="panel"><h3>Atraso ao longo do dia</h3><p class="nota">Hora local de partida. A barra cinza mostra a parte dos voos em cada hora.</p><div id="gHora"></div>
+  <div class="leg"><span><i class="l" style="background:var(--metA)"></i>partidas com atraso &gt; 30 min (%)</span><span><i style="background:var(--grid)"></i>% dos voos na hora</span></div></div>
+  <div class="grid2">
+    <div class="panel"><h3>A partida conforme as chegadas anteriores <span class="tag fixo">Fixo</span></h3><p class="nota">Chegadas da mesma companhia no mesmo aeroporto nas três horas anteriores. Atraso &gt; 30 min (%).</p><div id="gSit"></div></div>
+    <div class="panel"><h3>A posição do voo no dia <span class="tag fixo">Fixo</span></h3><p class="nota">Ordem do voo entre as partidas da companhia no aeroporto, no dia. Atraso &gt; 30 min (%).</p><div id="gPos"></div></div>
+  </div>
+</section>
+
+<section id="folga">
+  <div class="sh"><span class="code">03</span><h2>Folga nos horários e recuperação no trecho</h2><span class="tag rel">relatório 1.3</span><span class="tag fixo">Fixo</span></div>
+  <div class="leitura">
+    <div><h4>O que os dados mostram</h4>O tempo de bloco previsto embute de 3,1 (Azul) a 5,6 minutos (Gol) de folga. Quem tem mais folga recupera mais: a Gol chega com 2,7% menos atrasos acima de 30 min do que saiu; a Azul, com 0,7% a mais.</div>
+    <div><h4>Por que importa</h4>Folga dá ao passageiro um horário mais realista, mas o ganho operacional vem de cortar a propagação, que a simulação não mede. A conta de custo (atraso com assistência da Resolução 400, conexões e reputação, contra folga) fecha no piloto.</div>
+    <div class="acao"><h4>O que fazer</h4>Folga sazonal por aeroporto, mês e faixa horária (solução 4) e reserva nos dias de tempo ruim (solução 5), primeiro em piloto.</div>
+  </div>
+  <div class="grid2">
+    <div class="panel"><h3>Recuperação no trecho</h3><p class="nota">Dos voos que saem com mais de 15 minutos de atraso, a parte que chega até 15 minutos do previsto (%). Entre parênteses, a folga média no tempo de bloco. A Azul voa trechos mais curtos; ajustada a esse mix, a referência para ela fica em 21% a 24%.</p><div id="gRec"></div></div>
+    <div class="panel"><h3>Atrasos evitados por 1.000 minutos de folga</h3><p class="nota">Regra aprendida no 1º ano e testada no 2º; entre parênteses, os minutos de folga por voo. Com a mesma quantidade de minutos (3 por voo), a sazonal evita 3,8 contra 3,0 da uniforme, quase 30% a mais. * A folga do dia supõe previsão perfeita do tempo.</p><div id="gFolga"></div></div>
+  </div>
+</section>
+
+<section id="picos">
+  <div class="sh"><span class="code">04</span><h2>Picos do ano: dezembro e os dias cheios</h2><span class="tag rel">relatório 1.4</span><span class="tag din">Mês a mês responde a companhia e aeroporto</span></div>
+  <div class="leitura">
+    <div><h4>O que os dados mostram</h4>Com tempo bom, dezembro atrasou 10,7% em 2024 e 11,2% em 2025 (sem o vendaval), contra 6,3% fora do fim de ano; em 2024, novembro empatou. O pico vai de 1 a 23/12; de 24 a 31/12 cai para 8%, justamente a semana de mais viagens.</div>
+    <div><h4>Por que importa</h4>O pior serviço cai no período de maior visibilidade da marca, e a causa principal não está clara. São só dois dezembros: gastar sem medir é arriscado.</div>
+    <div class="acao"><h4>O que fazer</h4>Plano para 1 a 23 de dezembro com reforço de equipe de solo, check-in e bagagem, dentro dos limites de jornada (solução 7), montado para medir o efeito de cada reforço.</div>
+  </div>
+  <div class="panel"><h3>Atraso e cancelamento mês a mês</h3><p class="nota">A faixa clara marca o período escolhido nos filtros.</p><div id="gMes"></div>
+  <div class="leg"><span><i class="l" style="background:var(--metA)"></i>atraso &gt; 30 min (%)</span><span><i class="l" style="background:var(--metB)"></i>cancelamento (%)</span></div></div>
+  <div class="panel"><h3>Atraso por dia da semana <span class="tag fixo">Fixo</span></h3><p class="nota">Partidas com atraso acima de 30 minutos (%), período todo. Em vermelho, os dois piores dias.</p><div id="gSem" class="estreito"></div></div>
+</section>
+
+<section id="ponte">
+  <div class="sh"><span class="code">05</span><h2>Ponte aérea: por que cancela tanto</h2><span class="tag rel">relatório 1.5</span><span class="tag fixo">Fixo</span></div>
+  <div class="leitura">
+    <div><h4>O que os dados mostram</h4>A ponte Congonhas–Santos Dumont cancela 3,7% dos voos, contra 1,5% no resto da rede das três grandes (2,4 vezes). A proporção sem causa externa visível é parecida (cerca de metade); a diferença está na taxa: entre os voos sem tempo ruim, sem incidente e antes das 21h, a ponte cancela 2,8% contra 1,1%. E 83% dos cancelamentos vêm em par ida e volta.</div>
+    <div><h4>Por que importa</h4>É a rota de maior visibilidade do país, em aeroporto coordenado (regularidade de slots). Até 47% dos cancelamentos estimados têm motivo técnico-operacional. Sem causa externa visível não quer dizer controlável: o boletim não capta tempo em rota nem restrição de fluxo.</div>
+    <div class="acao"><h4>O que fazer</h4>Primeiro, cruzar os cancelamentos com o registro de motivos do centro de controle (2a); se confirmado, reserva de avião e tripulação e prontidão de manutenção (2b). Meta: 1,9% 12 meses após a decisão da 2b (cerca de 220 cancelamentos a menos por ano); melhor caso, 1,1% (cerca de 430).</div>
+  </div>
+  <div class="grid2">
+    <div class="panel"><h3>Em que condições os cancelamentos acontecem</h3><p class="nota">Parte dos cancelamentos de Azul, LATAM e Gol em cada condição (%), 2024-2026. A proporção é parecida; o que muda é a taxa: a ponte cancela mais em todas as condições. Resto da rede: Azul, LATAM e Gol nos aeroportos com boletim meteorológico.</p><div id="gPonteS"></div>
+    <div class="leg"><span><i style="background:var(--metA)"></i>ponte aérea</span><span><i style="background:var(--rede)"></i>resto da rede (Azul, LATAM e Gol)</span></div></div>
+    <div class="panel"><h3>Motivos estimados na ponte</h3><p class="nota">Faixa entre as duas formas de calibrar com o padrão de 2019, último ano com motivo declarado. Dado antigo e declarado pela própria companhia: serve só para orientar.</p><div id="gPonteM"></div></div>
+  </div>
+</section>
+
+<section id="reclamacoes">
+  <div class="sh"><span class="code">06</span><h2>Reclamações: o que as acompanha, o que pesa e o que resolve</h2><span class="tag rel">relatório 1.6</span><span class="tag din">Cartões e temas respondem aos filtros</span></div>
+  <div class="leitura">
+    <div><h4>O que os dados mostram</h4>O aeroporto define o volume (76%); a companhia define as graves (59%). Cada companhia repete os mesmos temas todo mês, em todos os aeroportos. Resolvida, a reclamação tem nota 4,6; não resolvida, 1,3 (resolução e nota são do consumidor).</div>
+    <div><h4>Por que importa</h4>O atendimento é a camada mais barata de melhorar e a que mais pesa na nota. A referência já existe no mercado: em bagagem extraviada, a LATAM resolve 64% e a Gol 37%.</div>
+    <div class="acao"><h4>O que fazer</h4>Resolução no primeiro contato copiando a melhor em cada tema (solução 1) e um responsável por eliminar a origem de cada tema recorrente (solução 3). Acompanhar com FCR e NPS internos.</div>
+  </div>
+  <p class="sub" id="recSub">Azul, LATAM e Gol, de set/2024 a dez/2025 (período comum a voos e reclamações). Com um aeroporto escolhido, entram só as reclamações que o citam em operação doméstica.</p>
+  <div class="cards" id="cardsR" style="margin-bottom:14px"></div>
+  <div class="grid2">
+    <div class="panel tablewrap"><h3>Temas mais citados</h3><p class="nota">Tema principal da reclamação, três grandes (o relatório conta todos os temas citados e todas as companhias, por isso os % diferem). ● tema grave: deixou de voar ou ficou retido sem alternativa ou assistência, preterição de embarque (overbooking), bagagem extraviada ou violada, passageiro com necessidade especial.</p><table id="tTemas"></table></div>
+    <div class="panel"><h3>Resolução nos temas de pior desfecho <span class="tag fixo">Fixo</span></h3><p class="nota">Reclamações resolvidas entre as avaliadas pelo consumidor (%). A melhor em cada tema é a referência para as outras.</p><div id="gResol"></div>
+    <div class="leg"><span><i style="background:var(--azul)"></i>Azul</span><span><i style="background:var(--latam)"></i>LATAM</span><span><i style="background:var(--gol)"></i>Gol</span></div></div>
+  </div>
+  <div class="grid2">
+    <div class="panel tablewrap"><h3>Por voo e por passageiro <span class="tag fixo">Fixo</span></h3><p class="nota">Reclamações por 10 mil voos e por 10 mil passageiros, set/2024 a dez/2025; Azul inclui Azul Conecta.</p>
+      <table><thead><tr><th>Companhia</th><th class="num">10 mil voos</th><th class="num">Graves</th><th class="num">10 mil pax.</th><th class="num">Graves</th><th class="num">Resol.</th></tr></thead>
+      <tbody><tr><td>Azul</td><td class="num">1.175</td><td class="num">443</td><td class="num">11,6</td><td class="num">4,4</td><td class="num">76%</td></tr>
+      <tr><td>LATAM</td><td class="num">1.025</td><td class="num">137</td><td class="num">6,6</td><td class="num">0,9</td><td class="num">76%</td></tr>
+      <tr><td>Gol</td><td class="num">782</td><td class="num">233</td><td class="num">5,5</td><td class="num">1,6</td><td class="num">75%</td></tr></tbody></table></div>
+    <div class="panel tablewrap"><h3>Temas que voltam todo mês acima do mercado <span class="tag fixo">Fixo</span></h3><p class="nota">Acima de 1,2 vez a taxa do mercado em pelo menos 75% dos 16 meses.</p>
+      <table><thead><tr><th>Companhia</th><th>Tema</th><th class="num">Vezes o mercado</th></tr></thead><tbody>
+      <tr><td>Azul</td><td>Preterição de embarque (overbooking)</td><td class="num">2,3</td></tr>
+      <tr><td>Azul</td><td>Falta de alternativa quando a companhia altera o voo</td><td class="num">1,7</td></tr>
+      <tr><td>Azul</td><td>Bagagem extraviada</td><td class="num">1,7</td></tr>
+      <tr><td>Gol</td><td>Falta de assistência no atraso</td><td class="num">1,8</td></tr>
+      <tr><td>Gol</td><td>Check-in e embarque</td><td class="num">1,6</td></tr>
+      <tr><td>LATAM</td><td>Aviso de alteração de voo</td><td class="num">2,3</td></tr>
+      <tr><td>LATAM</td><td>Oferta e compra</td><td class="num">2,0</td></tr></tbody></table></div>
+  </div>
+  <div class="panel tablewrap"><h3>Companhia e aeroporto acima do esperado quase todo mês <span class="tag fixo">Fixo</span></h3><p class="nota">Reclamações por 10 mil movimentos (partidas mais chegadas), acima de 1,2 vez o esperado em 75% ou mais dos meses. O esperado já desconta o padrão normal da companhia e do aeroporto.</p><table id="tPares"></table></div>
+</section>
+
+<section id="solucoes">
+  <div class="sh"><span class="code">07</span><h2>Soluções e pilotos</h2><span class="tag rel">relatório 2 e 3</span><span class="tag fixo">Fixo</span></div>
+  <p class="sub">Três camadas, com donos diferentes. <b>O lugar</b> (aeroporto, tráfego aéreo e clima) define o patamar. <b>A malha</b> (folga, tempo em solo, reserva, atrasar ou cancelar) decide quanto do atraso se espalha. <b>O atendimento</b> decide a nota e é o mais barato de mudar.</p>
+  <div class="panel tablewrap"><h3>Soluções</h3>
+  <table><thead><tr><th>#</th><th>O que fazer</th><th>Por quê</th><th>Quem faz</th><th>Custo financeiro</th><th>Custo humano</th></tr></thead><tbody>
+  <tr><td>1</td><td>Resolver no primeiro contato, copiando o processo da melhor companhia em cada tema</td><td>A nota é quase só o desfecho</td><td>Atendimento</td><td>Baixo</td><td>Médio</td></tr>
+  <tr><td>2a</td><td>Cruzar os cancelamentos da ponte com o registro do centro de controle; na rede, atrasar ou cancelar pesando os voos protegidos</td><td>Sem causa externa visível, a ponte cancela 2,8% contra 1,1%</td><td>Centro de controle</td><td>Baixo</td><td>Baixo</td></tr>
+  <tr><td>2b</td><td>Se confirmado: avião e tripulação de reserva na ponte e prontidão de manutenção</td><td>Até cerca de 430 cancelamentos a menos por ano</td><td>Centro de controle e manutenção</td><td>Alto</td><td>Médio</td></tr>
+  <tr><td>3</td><td>Eliminar a origem dos temas graves recorrentes</td><td>Os mesmos temas voltam todo mês</td><td>Comercial, aeroportos, atendimento</td><td>Baixo a médio</td><td>Médio</td></tr>
+  <tr><td>4</td><td>Folga sazonal por aeroporto, mês e faixa horária</td><td>4,5 atrasos evitados por 1.000 min</td><td>Planejamento de malha</td><td>Médio</td><td>Baixo</td></tr>
+  <tr><td>5</td><td>Folga e reserva no dia com previsão de tempo ruim</td><td>Tempo severo mais que dobra o atraso</td><td>Centro de controle</td><td>Médio</td><td>Médio</td></tr>
+  <tr><td>6</td><td>Proteção do tempo em solo em GRU, CGH, CNF e VCP (folga de solo, tripulação com o avião, avião de reserva)</td><td>Partida atrasa 29% com chegadas atrasadas</td><td>Companhia e aeroporto</td><td>Médio</td><td>Alto</td></tr>
+  <tr><td>7</td><td>Plano para 1 a 23 de dezembro: equipe de solo, check-in e bagagem</td><td>Com tempo bom, dezembro atrasa cerca de 70% a mais; o pico acaba antes do Natal</td><td>Companhia</td><td>Médio</td><td>Alto</td></tr>
+  <tr><td>8</td><td>Agenda com aeroporto e controle de tráfego para GRU e tempo ruim</td><td>GRU acrescenta atraso mesmo com tempo bom</td><td>Aeroporto, DECEA, governo</td><td>Alto (fora da companhia)</td><td>—</td></tr>
+  </tbody></table>
+  <p class="nota" style="margin-top:10px">Ordem recomendada: começar pelas soluções 1, 2a e 3, testar 4 a 6 em piloto antes de mudar a malha, aprovar a 7 até o início de novembro (linha de base em dez/2026, orçamento e contratação para dez/2027) e abrir a 8 como agenda institucional. Riscos: folga reduz o uso de cada avião; tempo mínimo em solo pode quebrar conexões de tripulação; atraso acima de 4 horas gera as mesmas obrigações do cancelamento (Resolução 400).</p></div>
+  <div class="panel tablewrap"><h3>Se a sua companhia é...</h3><p class="nota">As prioridades mudam conforme a companhia.</p>
+  <table><thead><tr><th>Companhia</th><th>O que atacar primeiro</th><th>Onde</th><th>Meta de referência</th></tr></thead><tbody>
+  <tr><td>Azul</td><td>Recuperação no trecho; preterição de embarque; bagagem extraviada; alternativas quando altera o voo</td><td>VCP (piloto de folga), GIG, FLN, THE</td><td>Recuperação de 14% para 21% a 24%; bagagem extraviada de 56% para 64%</td></tr>
+  <tr><td>Gol</td><td>Assistência no atraso; bagagem extraviada e avariada; check-in e embarque</td><td>VCP, CNF, tarde de GRU, ponte aérea</td><td>Assistência de 56% para 88%; bagagem extraviada de 37% para 64%</td></tr>
+  <tr><td>LATAM</td><td>Aviso de alteração; oferta e compra; atrasos curtos (A15)</td><td>CNF, tarde de GRU, ponte aérea</td><td>Confins de 317 para 180 reclamações por 10 mil movimentos</td></tr>
+  </tbody></table></div>
+  <h3 style="font:600 18px var(--f-cond);margin:18px 0 4px">Decisão pedida: três pilotos</h3>
+  <p class="sub">Em cada piloto, um sorteio define quais voos ou casos recebem a mudança; o restante é a comparação, nas mesmas condições. Com todas as companhias, sortear voos prova uma queda de 0,8 ponto em 90 dias; comparar aeroportos diferentes exigiria 2,1; alternar semanas, 6,9 (quanto maior, pior). Como cada piloto é de uma companhia só, os pilotos de operação têm 180 dias, com leitura aos 90.</p>
+  <div class="pilotos">
+    <div class="pil"><div class="ph"><b>Folga sazonal</b><span>SOL. 4 · CGH VCP</span></div><dl>
+      <dt>Objetivo</dt><dd>Provar que a folga reduz o atraso real, e não só o atraso contra um horário mais longo. Esperado: 1,1 ponto contra o horário publicado. A reserva dos dias de tempo ruim (sol. 5) é testada à parte, sorteando os dias.</dd>
+      <dt>Como</dt><dd>Metade das rotações (sequência de voos de um mesmo avião), sorteada na publicação da malha, com slot compatível na origem e no destino e aviso pela Resolução 400. Antes: dimensionar com as rotações internas.</dd>
+      <dt>Medida</dt><dd>Principal: partida seguinte do mesmo avião com atraso &gt; 30 min (dimensionada com os dados internos). Secundária: atraso contra o horário publicado.</dd>
+      <dt>Decisão</dt><dd>Pelo intervalo de confiança e pelos custos internos: se os minutos evitados pagarem a folga, estender a GRU e às demais bases.</dd></dl>
+      <div class="mde">180 dias, medida secundária: por voo, prova pelo menos <b>0,8 a 1,1 ponto</b> (por rotação, mais); esperado 1,1. Aos 90 dias, só para parar se não houver sinal ou houver dano.</div></div>
+    <div class="pil"><div class="ph"><b>Resolução no 1º contato</b><span>SOL. 1 · ATENDIMENTO</span></div><dl>
+      <dt>Objetivo</dt><dd>Provar que roteiro e autonomia aumentam a resolução, que define a nota.</dd>
+      <dt>Como</dt><dd>Metade dos casos, sorteada na entrada do atendimento, recebe roteiro e autonomia para bagagem e assistência no atraso.</dd>
+      <dt>Medida</dt><dd>Resolução no 1º contato (FCR) e custo por caso, nos registros internos; o número de casos é refeito com a taxa interna de FCR.</dd>
+      <dt>Decisão</dt><dd>Melhora de 10 pontos ou mais, com custo por caso aceitável: estender a todos os casos e temas.</dd></dl>
+      <div class="mde">90 dias: prova <b>+10 pontos</b> (377 casos por grupo, pela taxa do consumidor.gov.br)</div></div>
+    <div class="pil"><div class="ph"><b>Tempo em solo</b><span>SOL. 6 · GRU 14H–19H</span></div><dl>
+      <dt>Objetivo</dt><dd>Provar que proteger o solo do avião que chega atrasado reduz a passagem do atraso adiante. Efeito máximo, se toda a associação for causal: 6,6 pontos.</dd>
+      <dt>Como</dt><dd>Metade dos números de voo da tarde, sorteada, recebe equipe e recursos dedicados (aditivo do contrato de solo), sem mudar horário nem tirar a vez ou o recurso dos outros voos.</dd>
+      <dt>Medida</dt><dd>Atraso &gt; 30 min de cada grupo e, separadamente, das partidas com avião chegando atrasado; comparação contra o próprio histórico.</dd>
+      <dt>Decisão</dt><dd>Pelo intervalo de confiança: se o ganho pagar a equipe, estender a GRU inteiro e a Congonhas.</dd></dl>
+      <div class="mde">180 dias: prova <b>2,1 a 2,2 pontos</b> sobre 11,7% (LATAM ou Gol; na Azul, 5,7). Aos 90 dias, só para parar se houver dano.</div></div>
+  </div>
+</section>
+
+<section id="metas">
+  <div class="sh"><span class="code">08</span><h2>Metas e acompanhamento</h2><span class="tag rel">relatório 4</span><span class="tag fixo">Fixo</span></div>
+  <p class="sub">Metas só onde há apoio nos dados, cada uma com dono e etapa de 12 meses (perto da metade do caminho). Sem apoio, ficam em aberto, com a razão.</p>
+  <div class="panel tablewrap"><table><thead><tr><th>Indicador</th><th>Dono</th><th>Hoje</th><th>Em 12 meses</th><th>Referência final</th></tr></thead><tbody>
+  <tr><td>Partidas com atraso &gt; 30 min (rede)</td><td>Malha e CCO</td><td>8,0% (2º ano)</td><td>Pelo piloto 1, em hora real</td><td><b>7,0%</b> contra o horário novo (simulação)</td></tr>
+  <tr><td>Recuperação no trecho da Azul</td><td>Malha (Azul)</td><td>14,2%</td><td>18%</td><td><b>21% a 24%</b> (mix de etapas da Azul)</td></tr>
+  <tr><td>Resolução de bagagem extraviada (Gol / Azul)</td><td>Atendimento</td><td>37% / 56%</td><td>50% / 60%</td><td><b>64%</b> (LATAM)</td></tr>
+  <tr><td>Resolução de assistência no atraso (Gol / Azul)</td><td>Atendimento</td><td>56% / 62%</td><td>72% / 75%</td><td><b>88%</b> (LATAM)</td></tr>
+  <tr><td>Resolução de bagagem avariada (Gol)</td><td>Atendimento e aeroportos</td><td>50%</td><td>65%</td><td><b>80% a 87%</b> (Azul e LATAM)</td></tr>
+  <tr><td>Reclamações nos sete temas recorrentes</td><td>Comercial, aeroportos, atendimento</td><td>1,6 a 2,3 vezes o mercado</td><td>Metade do excesso</td><td><b>igual ao mercado</b> (cerca de 4,7 mil a menos por ano na Azul, 4,2 mil na LATAM, 0,6 mil na Gol)</td></tr>
+  <tr><td>LATAM em Confins</td><td>Base CNF (LATAM)</td><td>317 por 10 mil movimentos</td><td>250</td><td><b>180</b> (valor esperado)</td></tr>
+  <tr><td>Gol em Viracopos</td><td>Base VCP (Gol)</td><td>138 por 10 mil movimentos</td><td>90</td><td><b>43</b> (valor esperado; 3,2 vezes)</td></tr>
+  <tr><td>Cancelamento da ponte sem causa externa visível</td><td>CCO e manutenção</td><td>2,8%</td><td><b>1,9%</b> 12 meses após a 2b (cerca de 220 a menos por ano)</td><td>1,1% como melhor caso</td></tr>
+  <tr><td>Atraso em dezembro</td><td>Operações de aeroportos</td><td>12,2% (2024) e 15,6% (2025)</td><td>Medir dez/2026 como linha de base (plano em dez/2027)</td><td>em aberto</td></tr>
+  <tr><td>Efeito de GRU com tempo bom</td><td>Relações institucionais</td><td>+3,2 pontos</td><td>Agenda com aeroporto e DECEA</td><td>em aberto</td></tr>
+  </tbody></table>
+  <p class="nota" style="margin-top:10px"><b>Rotina:</b> mensal, atraso, cancelamento, D15/A15 e reclamações por companhia e aeroporto, e a regularidade de slots em CGH; por temporada, recalcular a folga sazonal; semestral, atualizar a referência de resolução por tema.</p></div>
+</section>
+
+<section id="ler">
+  <div class="sh"><span class="code">09</span><h2>Como ler os números</h2><span class="tag rel">relatório, anexo B</span><span class="tag fixo">Fixo</span></div>
+  <div class="panel"><ul class="lista">
+    <li><b>Escopo:</b> voos domésticos regulares com horário previsto, de set/2024 a ago/2026, o mesmo do relatório.</li>
+    <li><b>Atraso:</b> partida mais de 30 minutos depois do previsto (classe oficial da ANAC), sobre os voos realizados. <b>Cancelamento:</b> sobre os voos previstos. Partida é a saída do calço (off-block). <b>A15:</b> chegada até 15 minutos depois do horário, o critério de mercado.</li>
+    <li><b>Situação no painel de partidas:</b> compara o número filtrado com a rede inteira no período todo (atraso 7,9%, cancelamento 2,0%). "Acima da rede" quando passa a rede em mais de 1 ponto no atraso ou 0,5 ponto no cancelamento; "abaixo", no sentido contrário.</li>
+    <li><b>Minutos de atraso:</b> soma dos minutos dos voos atrasados, cada voo limitado a 24 horas. <b>Mediana do atraso:</b> metade dos voos atrasados esperou menos que isso; calculada por faixas de minutos, responde aos filtros (51 minutos no período todo, como no relatório). <b>A/A:</b> variação contra os mesmos meses do ano anterior; aparece quando o período começa em set/25 ou depois.</li>
+    <li><b>Ponto:</b> diferença direta entre duas taxas (de 7% para 8% é 1 ponto).</li>
+    <li><b>Hora:</b> hora local do aeroporto de origem. <b>Aeroporto:</b> o filtro usa o aeroporto de origem; os 50 maiores aparecem na lista.</li>
+    <li><b>Reclamações:</b> Azul, LATAM e Gol, tema principal de cada reclamação (o relatório conta todos os temas citados e todas as companhias, por isso as partes diferem). Sem aeroporto escolhido, contam todas as da companhia. Com aeroporto, só as que o citam como primeiro local, em operação doméstica; por isso podem diferir um pouco das tabelas do relatório.</li>
+    <li><b>Responde aos filtros / Fixo:</b> os blocos fixos repetem os números do relatório e não mudam com os filtros. Passe o mouse sobre os gráficos para ver os valores.</li>
+    <li><b>Limites:</b> associação não é causa, e os pilotos existem para provar a causa antes de ampliar. A base não traz o motivo do atraso nem a matrícula do avião. Sem causa externa visível não quer dizer controlável. O tema da reclamação é classificado pela própria companhia. São só dois dezembros. Gol e Azul passaram por recuperação judicial nos EUA no período.</li>
+  </ul></div>
+</section>
+</main>
+<footer><div class="wrap">Fontes: ANAC (Voo Regular Ativo, Dados Estatísticos e reclamações do consumidor.gov.br com Código Classificador) e Iowa Environmental Mesonet (METAR). Estudo independente, sem vínculo com as companhias citadas.</div></footer>
+<div id="tip" role="tooltip"></div>
+
+<script>
+const D = __DATA__;
+const F = D.F;
+const $ = s => document.querySelector(s);
+const fmt = (v, c = 0) => v == null || isNaN(v) ? "—" : v.toLocaleString("pt-BR", {minimumFractionDigits: c, maximumFractionDigits: c});
+const nomeMes = m => { const [a, b] = m.split("-"); return ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"][+b - 1] + "/" + a.slice(2); };
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const corCia = {Azul: "--azul", LATAM: "--latam", Gol: "--gol"};
+const REDE_ATR = +D.ind["partidas com atraso > 30 min %"], REDE_CANC = +D.ind["taxa de cancelamento %"];
+
+// dica ao passar o mouse
+const tip = $("#tip");
+document.addEventListener("mousemove", ev => {
+  const t = ev.target.closest && ev.target.closest("[data-tip]");
+  if (!t){ tip.style.display = "none"; return; }
+  tip.innerHTML = t.dataset.tip; tip.style.display = "block";
+  const x = Math.min(ev.clientX + 14, innerWidth - tip.offsetWidth - 8), y = ev.clientY + 16 + tip.offsetHeight > innerHeight ? ev.clientY - tip.offsetHeight - 10 : ev.clientY + 16;
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+});
+
+// filtros
+const fIni = $("#fIni"), fFim = $("#fFim"), fCia = $("#fCia"), fAer = $("#fAer");
+D.meses.forEach((m, i) => { fIni.add(new Option(nomeMes(m), i)); fFim.add(new Option(nomeMes(m), i)); });
+fCia.add(new Option("Todas", "all")); D.cias.forEach((c, i) => fCia.add(new Option(D.nomes[c], i)));
+fAer.add(new Option("Todos", "all"));
+D.aers.map((a, i) => [a, i]).sort((x, y) => x[0].localeCompare(y[0])).forEach(([a, i]) => fAer.add(new Option(a, i)));
+function limpar(){ fIni.value = 0; fFim.value = D.meses.length - 1; fCia.value = "all"; fAer.value = "all"; }
+limpar();
+[fIni, fFim, fCia, fAer].forEach(e => e.addEventListener("change", desenha));
+$("#fLimpar").addEventListener("click", () => { limpar(); desenha(); });
+$("#tema").addEventListener("click", () => {
+  const r = document.documentElement, escuro = r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  r.dataset.theme = escuro ? "light" : "dark"; desenha(); fixos();
+});
+function estado(){
+  let a = +fIni.value, b = +fFim.value; if (a > b) [a, b] = [b, a];
+  return {a, b, cia: fCia.value === "all" ? null : +fCia.value, aer: fAer.value === "all" ? null : +fAer.value};
+}
+function soma(rows){ const t = {prev:0, canc:0, real:0, atr:0, mins:0}; for (const r of rows){ t.prev += r[4]; t.canc += r[5]; t.real += r[6]; t.atr += r[7]; t.mins += r[8]; } return t; }
+function card(k, v, n){ return `<div class="card"><div class="k">${k}</div><div class="v">${v}</div><div class="n">${n || ""}</div></div>`; }
+const esc = s => String(s).replace(/"/g, "&quot;");
+const larg = el => Math.max(320, Math.round(el.clientWidth || 600));
+// "Ver dados": tabela com os números de cada gráfico (acessível e fácil de copiar)
+function tabela(el, cab, linhas){
+  let d = el.nextElementSibling;
+  if (!d || !d.classList.contains("dados")){ d = document.createElement("details"); d.className = "dados"; el.after(d); }
+  const aberto = d.open;
+  const leg = el.querySelector("svg") ? (el.querySelector("svg").getAttribute("aria-label") || "") : "";
+  d.innerHTML = `<summary>Ver dados</summary><div class="tablewrap"><table>${leg ? `<caption style="text-align:left;caption-side:top;color:var(--ink-3);font-size:12px;padding:4px 0">${leg}. Fonte: resultados do estudo (ANAC).</caption>` : ""}<thead><tr>${cab.map((c, i) => `<th${i ? ' class="num"' : ""}>${c}</th>`).join("")}</tr></thead><tbody>` +
+    linhas.map(l => `<tr>${l.map((v, i) => `<td${i ? ' class="num"' : ""}>${v}</td>`).join("")}</tr>`).join("") + "</tbody></table></div>";
+  d.open = aberto;
+}
+
+// barras horizontais: linhas = [rótulo, [valores], [cores], [nomes da série]]
+function hbars(el, linhas, opt = {}){
+  const W = larg(el), lw = opt.lw || 170, R = 58, bh = opt.bh || 14, gap = 3, grupo = linhas[0][1].length, rh = grupo * (bh + gap) + 12;
+  const H = linhas.length * rh + 6, max = opt.max || Math.max(...linhas.flatMap(l => l[1])) * 1.05;
+  const x = v => lw + (W - lw - R) * v / max, u = opt.u ?? "%", c = opt.c ?? 1;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${opt.label || ""}">`;
+  s += `<line x1="${lw}" x2="${lw}" y1="2" y2="${H - 4}" stroke="${css("--line")}"/>`;
+  linhas.forEach((l, i) => {
+    const y0 = i * rh + 8;
+    s += `<text x="${lw - 8}" y="${y0 + (grupo * (bh + gap) - gap) / 2 + 4}" text-anchor="end">${l[0]}</text>`;
+    l[1].forEach((v, j) => {
+      const y = y0 + j * (bh + gap), w = Math.max(4, x(v) - lw), cor = css(l[2][j]);
+      const dica = `<b>${l[0]}</b>${l[3] ? " · " + l[3][j] : ""}<br>${fmt(v, c)}${u}`;
+      s += `<g data-tip="${esc(dica)}"><rect x="${lw}" y="${y - 1}" width="${W - lw}" height="${bh + 2}" fill="transparent"/>`;
+      s += `<path d="M${lw},${y} h${w - 4} a4,4 0 0 1 4,4 v${bh - 8} a4,4 0 0 1 -4,4 h-${w - 4} z" fill="${cor}"/>`;
+      s += `<text class="v" x="${lw + w + 6}" y="${y + bh - 3}">${fmt(v, c)}${u}</text></g>`;
+    });
+  });
+  el.innerHTML = s + "</svg>";
+  tabela(el, [opt.cab || "Item", ...(linhas[0][3] || [opt.serie || "Valor"])], linhas.map(l => [l[0], ...l[1].map(v => fmt(v, c) + u)]));
+}
+// halteres: [rótulo, normal, severo]
+function halteres(el, linhas){
+  const W = Math.min(larg(el), 760), lw = 56, R = 70, rh = 26, H = linhas.length * rh + 26;
+  const max = Math.ceil(Math.max(...linhas.map(l => l[2])) / 5) * 5, x = v => lw + (W - lw - R) * v / max;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Atraso com tempo normal e severo por aeroporto">`;
+  for (let v = 0; v <= max; v += 5) s += `<line x1="${x(v)}" x2="${x(v)}" y1="4" y2="${H - 20}" stroke="${css("--grid")}"/><text x="${x(v)}" y="${H - 6}" text-anchor="middle">${v}%</text>`;
+  linhas.forEach((l, i) => {
+    const y = i * rh + 16, dica = `<b>${l[0]}</b><br>tempo normal: ${fmt(l[1], 1)}%<br>tempo severo: ${fmt(l[2], 1)}%<br>+${fmt(l[2] - l[1], 1)} pontos`;
+    s += `<g data-tip="${esc(dica)}"><rect x="0" y="${y - 12}" width="${W}" height="${rh}" fill="transparent"/>`;
+    s += `<text x="${lw - 10}" y="${y + 4}" text-anchor="end" style="font-family:var(--f-mono);font-weight:600">${l[0]}</text>`;
+    s += `<line x1="${x(l[1])}" x2="${x(l[2])}" y1="${y}" y2="${y}" stroke="${css("--line")}" stroke-width="3"/>`;
+    s += `<circle cx="${x(l[1])}" cy="${y}" r="6" fill="${css("--rede")}" stroke="${css("--surface")}" stroke-width="2"/>`;
+    s += `<circle cx="${x(l[2])}" cy="${y}" r="6" fill="${css("--metB")}" stroke="${css("--surface")}" stroke-width="2"/>`;
+    s += `<text class="v" x="${x(l[2]) + 12}" y="${y + 4}">+${fmt(l[2] - l[1], 1)}</text></g>`;
+  });
+  el.innerHTML = s + "</svg>";
+  tabela(el, ["Aeroporto", "Tempo normal", "Tempo severo", "Aumento (pontos)"], linhas.map(l => [l[0], fmt(l[1], 1) + "%", fmt(l[2], 1) + "%", "+" + fmt(l[2] - l[1], 1)]));
+}
+// faixas: [rótulo, baixo, alto]
+function faixas(el, linhas){
+  const W = larg(el), lw = 200, R = 80, rh = 30, H = linhas.length * rh + 26, max = 60, x = v => lw + (W - lw - R) * v / max;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Motivos estimados dos cancelamentos da ponte">`;
+  for (let v = 0; v <= max; v += 10) s += `<line x1="${x(v)}" x2="${x(v)}" y1="4" y2="${H - 20}" stroke="${css("--grid")}"/><text x="${x(v)}" y="${H - 6}" text-anchor="middle">${v}%</text>`;
+  linhas.forEach((l, i) => {
+    const y = i * rh + 18, w = Math.max(8, x(l[2]) - x(l[1])), dica = `<b>${l[0]}</b><br>${fmt(l[1], 0)}% a ${fmt(l[2], 0)}%`;
+    s += `<g data-tip="${esc(dica)}"><rect x="0" y="${y - 13}" width="${W}" height="${rh}" fill="transparent"/>`;
+    s += `<text x="${lw - 8}" y="${y + 4}" text-anchor="end">${l[0]}</text>`;
+    s += `<rect x="${x(l[1])}" y="${y - 7}" width="${w}" height="14" rx="4" fill="${css("--metA")}"/>`;
+    s += `<text class="v" x="${x(l[1]) + w + 6}" y="${y + 4}">${fmt(l[1], 0)}–${fmt(l[2], 0)}%</text></g>`;
+  });
+  el.innerHTML = s + "</svg>";
+  tabela(el, ["Motivo", "De", "Até"], linhas.map(l => [l[0], fmt(l[1], 0) + "%", fmt(l[2], 0) + "%"]));
+}
+// linhas com cruz ao passar o mouse
+function linhas(el, xs, series, opt){
+  const W = larg(el), H = opt.h || 260, L = 40, R = 12, T = 12, B = 34;
+  const ymax = opt.ymax || Math.max(1, ...series.flatMap(s => s.v.filter(x => x != null))) * 1.15;
+  const x = i => L + (W - L - R) * (xs.length === 1 ? 0.5 : i / (xs.length - 1));
+  const y = v => T + (H - T - B) * (1 - v / ymax);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${opt.label}">`;
+  if (opt.faixa){ const [a, b] = opt.faixa; s += `<rect x="${x(a) - 6}" y="${T}" width="${x(b) - x(a) + 12}" height="${H - T - B}" fill="${css("--soft")}"/>`; }
+  if (opt.barras){ const bm = Math.max(...opt.barras) * 1.1 || 1, bw = (W - L - R) / xs.length * 0.62;
+    opt.barras.forEach((v, i) => { const hh = (H - T - B) * 0.45 * v / bm; s += `<rect x="${x(i) - bw / 2}" y="${H - B - hh}" width="${bw}" height="${hh}" rx="3" fill="${css("--grid")}"/>`; }); }
+  const passo = ymax > 20 ? 5 : ymax > 8 ? 2 : 1;
+  for (let v = 0; v <= ymax; v += passo){ s += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="${css("--grid")}"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end">${fmt(v)}%</text>`; }
+  const pul = Math.ceil(xs.length / Math.max(4, Math.floor(W / 75)));
+  xs.forEach((t, i) => { if (i % pul === 0) s += `<text x="${x(i)}" y="${H - 12}" text-anchor="middle">${t}</text>`; });
+  for (const se of series){
+    let d = ""; se.v.forEach((v, i) => { if (v == null) return; d += (d ? "L" : "M") + x(i).toFixed(1) + "," + y(v).toFixed(1); });
+    s += `<path d="${d}" fill="none" stroke="${se.cor}" stroke-width="2" stroke-linejoin="round"/>`;
+  }
+  const passoX = xs.length > 1 ? (W - L - R) / (xs.length - 1) : W;
+  xs.forEach((t, i) => {
+    const vals = series.map(se => se.v[i]); if (vals.every(v => v == null)) return;
+    const dica = `<b>${t}</b>` + series.map((se, k) => vals[k] == null ? "" : `<br>${se.nome}: ${fmt(vals[k], 1)}%`).join("");
+    s += `<g class="hx" data-tip="${esc(dica)}"><rect x="${x(i) - passoX / 2}" y="${T}" width="${passoX}" height="${H - T - B}" fill="transparent"/>`;
+    s += `<line class="cx" x1="${x(i)}" x2="${x(i)}" y1="${T}" y2="${H - B}" stroke="${css("--ink-3")}" stroke-dasharray="3 3" opacity="0"/>`;
+    series.forEach((se, k) => { if (vals[k] != null) s += `<circle class="cx" cx="${x(i)}" cy="${y(vals[k])}" r="4.5" fill="${se.cor}" stroke="${css("--surface")}" stroke-width="2" opacity="0"/>`; });
+    s += `</g>`;
+  });
+  el.innerHTML = s + "</svg>";
+  tabela(el, [opt.cab || "Período", ...series.map(se => se.nome + " (%)"), ...(opt.base ? [opt.base.nome] : [])], xs.map((t, i) => [t, ...series.map(se => fmt(se.v[i], 1)), ...(opt.base ? [fmt(opt.base.v[i])] : [])]));
+  el.querySelectorAll("g.hx").forEach(g => { g.addEventListener("mouseenter", () => g.querySelectorAll(".cx").forEach(c => c.setAttribute("opacity", 1)));
+    g.addEventListener("mouseleave", () => g.querySelectorAll(".cx").forEach(c => c.setAttribute("opacity", 0))); });
+}
+
+function mediana(e){
+  const nb = D.bordas.length - 1, c = new Array(nb).fill(0);
+  for (const r of D.hb) if (r[0] >= e.a && r[0] <= e.b && (e.cia == null || r[1] === e.cia) && (e.aer == null || r[2] === e.aer)) for (let k = 0; k < nb; k++) c[k] += r[3 + k];
+  const tot = c.reduce((a, b) => a + b, 0); if (!tot) return null;
+  let acc = 0;
+  for (let k = 0; k < nb; k++){ if (acc + c[k] >= tot / 2) return D.bordas[k] + (D.bordas[k + 1] - D.bordas[k]) * (tot / 2 - acc) / c[k]; acc += c[k]; }
+  return null;
+}
+function situacao(v, rede, lim){
+  if (v == null || isNaN(v)) return `<span class="st neu">— Sem dados</span>`;
+  if (v > rede + lim) return `<span class="st warn">▲ Acima da rede</span>`;
+  if (v < rede - lim) return `<span class="st ok">▼ Abaixo da rede</span>`;
+  return `<span class="st neu">● Na média</span>`;
+}
+
+function desenha(){
+  const e = estado();
+  const filtra = (r, usaMes = true, usaAer = true) => (!usaMes || (r[0] >= e.a && r[0] <= e.b)) && (e.cia == null || r[1] === e.cia) && (!usaAer || e.aer == null || r[2] === e.aer);
+  const sel = D.v.filter(r => filtra(r)), t = soma(sel);
+  const nomeC = e.cia == null ? "Todas as companhias" : D.nomes[D.cias[e.cia]];
+  const nomeA = e.aer == null ? "todos os aeroportos" : D.aers[e.aer];
+  $("#boardSub").textContent = `${nomeMes(D.meses[e.a])} a ${nomeMes(D.meses[e.b])} · ${nomeC} · ${nomeA}`;
+  const atr = t.real ? 100 * t.atr / t.real : null, canc = t.prev ? 100 * t.canc / t.prev : null;
+  const filtrado = e.a > 0 || e.b < D.meses.length - 1 || e.cia != null || e.aer != null;
+  // mesmos meses do ano anterior, quando existem na base
+  const temAnt = e.a >= 12, t0 = temAnt ? soma(D.v.filter(r => r[0] >= e.a - 12 && r[0] <= e.b - 12 && (e.cia == null || r[1] === e.cia) && (e.aer == null || r[2] === e.aer))) : null;
+  const atr0 = t0 && t0.real ? 100 * t0.atr / t0.real : null, canc0 = t0 && t0.prev ? 100 * t0.canc / t0.prev : null;
+  const varPct = (v, v0) => v0 ? `${v >= v0 ? "+" : "−"}${fmt(Math.abs(100 * (v / v0 - 1)), 1)}% a/a` : "";
+  const varPt = (v, v0) => v0 != null ? `<span class="dlt ${v > v0 ? "up" : "dn"}">${v >= v0 ? "▲ +" : "▼ −"}${fmt(Math.abs(v - v0), 1)} pt a/a</span>` : "";
+  const neutro = txt => txt ? `<span class="st neu">${txt}</span>` : "<span></span>";
+  $("#boardRows").innerHTML = t.prev === 0 ? `<div class="brow"><div class="lbl">Sem voos para estes filtros</div></div>` :
+    `<div class="brow"><div class="lbl">Voos previstos<small>${fmt(t.real)} realizados</small></div><div class="flap">${fmt(t.prev)}</div>${neutro(temAnt ? varPct(t.prev, t0.prev) : "")}</div>` +
+    `<div class="brow"><div class="lbl">Atraso &gt; 30 min<small>${filtrado ? `rede ${fmt(REDE_ATR, 1)}% ` : "partidas realizadas"}${varPt(atr, atr0)}</small></div><div class="flap">${fmt(atr, 1)}%</div>${filtrado ? situacao(atr, REDE_ATR, 1) : "<span></span>"}</div>` +
+    `<div class="brow"><div class="lbl">Cancelamento<small>${filtrado ? `rede ${fmt(REDE_CANC, 1)}% ` : "voos previstos"}${varPt(canc, canc0)}</small></div><div class="flap">${fmt(canc, 1)}%</div>${filtrado ? situacao(canc, REDE_CANC, 0.5) : "<span></span>"}</div>` +
+    `<div class="brow"><div class="lbl">Minutos de atraso<small>cada voo limitado a 24 h</small></div><div class="flap">${t.mins >= 1e6 ? fmt(t.mins / 1e6, 1) + " mi" : fmt(t.mins / 1e3) + " mil"}</div>${neutro(temAnt ? varPct(t.mins, t0.mins) : "")}</div>` +
+    `<div class="brow"><div class="lbl">Mediana do atraso<small>dos voos com mais de 30 min</small></div><div class="flap">${fmt(mediana(e))} min</div>${neutro(temAnt ? (() => { const a = mediana(e), b = mediana({...e, a: e.a - 12, b: e.b - 12}); return b ? `${a >= b ? "+" : "−"}${fmt(Math.abs(a - b))} min a/a` : ""; })() : "")}</div>`;
+
+  // as três grandes lado a lado
+  const FIX = {AZU: ["85,7%", "11,6"], TAM: ["83,3%", "6,6"], GLO: ["88,5%", "5,5"]};
+  $("#tCias").innerHTML = `<thead><tr><th>Companhia</th><th class="num">Voos previstos</th><th class="num">Atraso &gt; 30 min</th><th class="num">Cancelamento</th><th class="num">A15 em 2025</th><th class="num">Reclamações por 10 mil pax.</th></tr></thead><tbody>` +
+    [0, 1, 2].map(ci => { const tc = soma(D.v.filter(r => r[0] >= e.a && r[0] <= e.b && r[1] === ci && (e.aer == null || r[2] === e.aer)));
+      const nome = D.nomes[D.cias[ci]], cv = {Azul: "--azul", LATAM: "--latam", Gol: "--gol"}[nome];
+      return `<tr><td><i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(${cv});margin-right:6px"></i>${nome}</td><td class="num">${fmt(tc.prev)}</td><td class="num">${fmt(tc.real ? 100 * tc.atr / tc.real : null, 1)}%</td><td class="num">${fmt(tc.prev ? 100 * tc.canc / tc.prev : null, 1)}%</td><td class="num">${FIX[D.cias[ci]][0]}</td><td class="num">${FIX[D.cias[ci]][1]}</td></tr>`; }).join("") + "</tbody>";
+
+  // mês a mês (sem filtro de período)
+  const mesAgg = D.meses.map(() => ({prev:0, canc:0, real:0, atr:0}));
+  for (const r of D.v) if (filtra(r, false)) { const m = mesAgg[r[0]]; m.prev += r[4]; m.canc += r[5]; m.real += r[6]; m.atr += r[7]; }
+  linhas($("#gMes"), D.meses.map(nomeMes), [
+    {nome: "atraso > 30 min", v: mesAgg.map(m => m.real ? 100 * m.atr / m.real : null), cor: css("--metA")},
+    {nome: "cancelamento", v: mesAgg.map(m => m.prev ? 100 * m.canc / m.prev : null), cor: css("--metB")}], {label: "Atraso e cancelamento por mês", cab: "Mês", base: {nome: "Voos previstos", v: mesAgg.map(m => m.prev)}, faixa: (e.a > 0 || e.b < D.meses.length - 1) ? [e.a, e.b] : null});
+
+  // hora
+  const h = Array.from({length: 24}, () => ({real:0, atr:0, prev:0}));
+  for (const r of sel){ const x = h[r[3]]; x.real += r[6]; x.atr += r[7]; x.prev += r[4]; }
+  const totp = h.reduce((s, x) => s + x.prev, 0) || 1;
+  linhas($("#gHora"), h.map((_, i) => i + "h"), [{nome: "atraso > 30 min", v: h.map(x => x.real >= 30 ? 100 * x.atr / x.real : null), cor: css("--metA")}],
+    {label: "Atraso por hora local", cab: "Hora", base: {nome: "Voos previstos", v: h.map(x => x.prev)}, barras: h.map(x => 100 * x.prev / totp)});
+
+  // aeroportos (ignora o filtro de aeroporto)
+  const porA = {}; let totMin = 0;
+  for (const r of D.v) if (filtra(r, true, false)) { const k = r[2]; porA[k] = porA[k] || {prev:0, canc:0, real:0, atr:0, mins:0};
+    const p = porA[k]; p.prev += r[4]; p.canc += r[5]; p.real += r[6]; p.atr += r[7]; p.mins += r[8]; totMin += r[8]; }
+  const lst = Object.entries(porA).filter(([k]) => +k !== D.aers.length - 1).sort((x, y) => y[1].mins - x[1].mins).slice(0, 15);
+  const mx = lst.length ? lst[0][1].mins : 1;
+  $("#tAer").innerHTML = `<thead><tr><th>Aeroporto</th><th class="num">Voos previstos</th><th class="num">Atraso &gt; 30 min</th><th class="num">Cancelamento</th><th class="num">% dos minutos</th><th></th></tr></thead><tbody>` +
+    lst.map(([k, p]) => `<tr${e.aer === +k ? ' style="background:var(--soft)"' : ""}><td><span class="iata">${D.aers[k]}</span></td><td class="num">${fmt(p.prev)}</td><td class="num">${fmt(100 * p.atr / p.real, 1)}%</td><td class="num">${fmt(100 * p.canc / p.prev, 1)}%</td><td class="num">${fmt(100 * p.mins / totMin, 1)}%</td><td style="width:22%"><span class="mini" style="width:${(100 * p.mins / mx).toFixed(0)}%"></span></td></tr>`).join("") + "</tbody>";
+
+  // reclamações
+  const mesesSel = new Set(D.meses.slice(e.a, e.b + 1));
+  const rIdx = D.rmeses.map((m, i) => mesesSel.has(m) ? i : -1).filter(i => i >= 0), rSet = new Set(rIdx);
+  const big = e.cia == null || e.cia <= 2;
+  let html = "", temas = [];
+  if (!big){ html = `<div class="vazio">As reclamações são analisadas só para Azul, LATAM e Gol.</div>`; }
+  else if (!rIdx.length){ html = `<div class="vazio">Não há dados de reclamação no período escolhido (as reclamações vão até dez/2025).</div>`; }
+  else {
+    const rs = D.r.filter(r => rSet.has(r[0]) && (e.cia == null || r[1] === e.cia) && (e.aer == null ? true : r[2] === e.aer));
+    let n = 0, g = 0, res = 0, aval = 0; const tm = {};
+    for (const r of rs){ n += r[6]; if (r[4] === 2) g += r[6]; if (r[5] === 1){ res += r[6]; aval += r[6]; } else if (r[5] === 0) aval += r[6];
+      const k = r[3]; tm[k] = tm[k] || {n:0, g:0, res:0, aval:0}; tm[k].n += r[6]; if (r[4] === 2) tm[k].g += r[6]; if (r[5] === 1){ tm[k].res += r[6]; tm[k].aval += r[6]; } else if (r[5] === 0) tm[k].aval += r[6]; }
+    html = card("Reclamações", fmt(n), e.aer == null ? "todas as da(s) companhia(s)" : "que citam o aeroporto") +
+           card("Graves", fmt(n ? 100 * g / n : null, 1) + "%", fmt(g) + " reclamações") +
+           card("Resolução", aval ? fmt(100 * res / aval, 0) + "%" : "—", "entre as avaliadas pelo consumidor");
+    if (e.aer != null){
+      const ciaOk = c => e.cia == null ? c <= 3 : (c === e.cia || (e.cia === 0 && c === 3));
+      let mov = 0;
+      for (const r of D.v) if (mesesSel.has(D.meses[r[0]]) && rSet.has(D.rmeses.indexOf(D.meses[r[0]])) && ciaOk(r[1]) && r[2] === e.aer) mov += r[4];
+      for (const r of D.cheg) if (rSet.has(D.rmeses.indexOf(D.meses[r[0]])) && ciaOk(r[1]) && r[2] === e.aer) mov += r[3];
+      html += card("Por 10 mil movimentos", fmt(mov ? 1e4 * n / mov : null, 0), "partidas + chegadas no aeroporto");
+    }
+    const ri = rIdx[0], rf = rIdx[rIdx.length - 1];
+    $("#recSub").textContent = `Azul, LATAM e Gol, de ${nomeMes(D.rmeses[ri])} a ${nomeMes(D.rmeses[rf])} (as reclamações vão até dez/2025). Com um aeroporto escolhido, entram só as reclamações que o citam em operação doméstica.`;
+    if (n < 100) html += `<div class="vazio" style="grid-column:1/-1">Base pequena (${fmt(n)} reclamações): percentuais pouco confiáveis.</div>`;
+    temas = Object.entries(tm).filter(([k]) => D.temas[k] !== "Sem código").sort((x, y) => y[1].n - x[1].n).slice(0, 10); window._nTot = n;
+  }
+  $("#cardsR").innerHTML = html;
+  $("#tTemas").innerHTML = temas.length ? `<thead><tr><th>Tema</th><th class="num">Reclamações</th><th class="num">% do total</th><th class="num">Resolução</th></tr></thead><tbody>` +
+    temas.map(([k, x]) => `<tr><td>${x.g / x.n > 0.5 ? "<b style='color:var(--metB)'>●</b> " : ""}${D.temas[k]}</td><td class="num">${fmt(x.n)}</td><td class="num">${fmt(100 * x.n / window._nTot, 1)}%</td><td class="num">${x.aval ? fmt(100 * x.res / x.aval, 0) + "%" : "—"}</td></tr>`).join("") + "</tbody>"
+    : `<tbody><tr><td class="vazio">Sem reclamações para estes filtros.</td></tr></tbody>`;
+}
+
+function fixos(){
+  halteres($("#gClima"), F.clima);
+  hbars($("#gSit"), F.situacao.map(r => [r[0], [r[1]], [r[0] === "Maioria atrasada" ? "--metB" : "--metA"]]), {lw: 150, cab: "Chegadas anteriores", serie: "Atraso > 30 min", label: "Atraso conforme as chegadas anteriores"});
+  hbars($("#gPos"), F.posicao.slice(0, 5).map(r => [r[0], [r[1]], ["--metA"]]), {lw: 150, cab: "Posição no dia", serie: "Atraso > 30 min", label: "Atraso conforme a posição do voo no dia"});
+  hbars($("#gRec"), F.recup.map(r => [`${r[0]} (${fmt(r[2], 1)} min)`, [r[1]], [corCia[r[0]]]]), {lw: 150, cab: "Companhia (folga média)", serie: "Chegam até 15 min do previsto", label: "Recuperação no trecho por companhia"});
+  hbars($("#gFolga"), F.folga.map(r => [r[0] + " (" + fmt(r[2], 1) + " min)" + (r[0].startsWith("Só") ? " *" : ""), [r[1]], [r[0].startsWith("Igual") ? "--rede" : "--metA"]]), {lw: 250, u: "", c: 1, cab: "Estratégia (minutos por voo)", serie: "Atrasos evitados por 1.000 min", label: "Atrasos evitados por mil minutos de folga"});
+  hbars($("#gSem"), F.dsem.map(r => [r[0], [r[1]], [r[0] === "qui" || r[0] === "sex" ? "--metB" : "--metA"]]), {lw: 50, bh: 12, cab: "Dia", serie: "Atraso > 30 min", label: "Atraso por dia da semana"});
+  const nomesS = {"sem sinal observável": "Sem causa externa visível", "tempo ruim": "Tempo ruim", "evento no aeroporto": "Incidente no aeroporto", "fim do dia (após 21h)": "Depois das 21h"};
+  hbars($("#gPonteS"), F.ponte_sinais.map(r => [nomesS[r[0]] || r[0], [r[1], r[2]], ["--metA", "--rede"], ["ponte aérea", "resto da rede"]]), {lw: 170, cab: "Condição", label: "Condições dos cancelamentos, ponte e resto da rede"});
+  const nomesM = {"clima": "Clima", "técnico-operacional (companhia)": "Técnico-operacional", "aeroporto fechado": "Aeroporto fechado", "programado/autorizado": "Programado ou comercial"};
+  faixas($("#gPonteM"), ["clima", "técnico-operacional (companhia)", "aeroporto fechado", "programado/autorizado"].map(g => { const r = F.ponte_motivos.find(x => x[0] === g); return [nomesM[g], r[1], r[2]]; }));
+  const nomesT = {"Assistência material no atraso": "Assistência no atraso"};
+  hbars($("#gResol"), F.resol.map(r => [nomesT[r[0]] || r[0], [r[1], r[2], r[3]], ["--azul", "--latam", "--gol"], ["Azul", "LATAM", "Gol"]]), {lw: 150, bh: 12, max: 100, c: 0, cab: "Tema", label: "Resolução por tema e companhia"});
+  $("#tPares").innerHTML = `<thead><tr><th>Companhia</th><th>Aeroporto</th><th class="num">Por 10 mil movimentos</th><th class="num">Esperado</th><th class="num">Vezes o esperado</th></tr></thead><tbody>` +
+    F.pares.map(p => `<tr><td>${p[0]}</td><td><span class="iata">${p[1]}</span></td><td class="num">${fmt(p[2])}</td><td class="num">${fmt(p[3])}</td><td class="num">${fmt(p[2] / p[3], 1)}</td></tr>`).join("") + "</tbody>";
+}
+desenha(); fixos();
+let _rz; addEventListener("resize", () => { clearTimeout(_rz); _rz = setTimeout(() => { desenha(); fixos(); }, 200); });
+</script>
+</body>
+</html>
