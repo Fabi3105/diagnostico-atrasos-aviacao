@@ -1,7 +1,7 @@
 ﻿,co,voos,atraso_partida_pct,atraso_chegada_pct,atraso_mediano,parte_dos_voos_pct,cancelamento_pct
-tempo na origem,moderado,188960,9.93,9.99,0.0,12.82,2.13
-tempo na origem,normal,1213367,6.96,6.87,-2.0,82.33,1.57
-tempo na origem,severo,71468,17.42,18.12,2.0,4.85,4.52
-tempo no destino,moderado,152776,8.96,9.85,,,
-tempo no destino,normal,1272551,7.56,7.23,,,
-tempo no destino,severo,48484,11.4,15.97,,,
+tempo na origem,moderado,189808,9.94,10.01,0.0,12.82,2.16
+tempo na origem,normal,1219495,6.97,6.88,-2.0,82.34,1.61
+tempo na origem,severo,71777,17.42,18.13,2.0,4.85,4.56
+tempo no destino,moderado,153430,8.97,9.87,,,
+tempo no destino,normal,1278896,7.57,7.25,,,
+tempo no destino,severo,48686,11.41,15.99,,,

@@ -202,7 +202,7 @@ chk("revisão 3", "GRU tarde por companhia", f"de {br(g90.min(), 1)} a {br(g90.m
 ge = ler("q12g_erros_de_data.csv").iloc[0]
 chk("revisão 3", "voos com erro de data", f"Há {int(ge.voos_com_erro_de_data)} voos com a data", "q12g_erros_de_data.csv")
 se = ler("q12e_dezembro_por_semana.csv").set_index("semana")
-chk("revisão 3", "última semana de dezembro", f"{br(se.loc['24 a 31/12', '2024'], 1)}% nos dois anos de 24 a 31/12", "q12e_dezembro_por_semana.csv")
+chk("revisão 3", "última semana de dezembro", f"{br(se.loc['24 a 31/12', '2024'], 1)}% e {br(se.loc['24 a 31/12', '2025'], 1)}% de 24 a 31/12", "q12e_dezembro_por_semana.csv")
 chk("revisão 3", "1ª semana dez 2024", f"{br(se.loc['1 a 7/12', '2024'], 1)}% e {br(se.loc['1 a 7/12', '2025'], 1)}% de 1 a 7/12", "q12e_dezembro_por_semana.csv")
 
 # ponte: razão contra o resto da rede das três grandes (taxa total da ponte e da rede das três grandes, sem filtro de METAR)

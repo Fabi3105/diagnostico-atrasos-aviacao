@@ -1,15 +1,15 @@
 ﻿indicador,valor
-voos previstos (escopo),1570951.0
-voos realizados,1540099.0
-voos cancelados,30852.0
-taxa de cancelamento %,1.96
-partidas com atraso > 30 min %,7.87
-chegadas com atraso > 30 min %,7.84
-partidas antes do previsto %,56.13
+voos previstos (escopo),1580343.0
+voos realizados,1548607.0
+voos cancelados,31736.0
+taxa de cancelamento %,2.01
+partidas com atraso > 30 min %,7.88
+chegadas com atraso > 30 min %,7.86
+partidas antes do previsto %,56.11
 atraso mediano dos voos atrasados (min),51.0
-minutos de atraso acumulados (milhões),8.73
-participação Azul+LATAM+Gol nos voos %,97.5
+minutos de atraso acumulados (milhões),8.79
+participação Azul+LATAM+Gol nos voos %,97.01
 reclamações no período comum (set/2024-dez/2025),134666.0
-reclamações de Azul+LATAM+Gol por 10 mil voos (período comum),1098.72
+reclamações de Azul+LATAM+Gol por 10 mil voos (período comum),1097.26
 reclamações de gravidade alta %,26.43
 nota média do consumidor,3.58

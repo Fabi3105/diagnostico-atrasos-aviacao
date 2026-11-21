@@ -27,7 +27,7 @@ chk("voos", "cancelados com horário real", um("SELECT COUNT(*) FROM voos WHERE 
 dup = um("""SELECT COUNT(*) - COUNT(DISTINCT empresa||'|'||voo||'|'||partida_prev||'|'||origem) FROM voos
             WHERE partida_prev IS NOT NULL""")
 chk("voos", "voos repetidos (empresa, número, origem, partida prevista)", dup, dup < 1000,
-    "menos de 0,01% da base; mantidos, sem efeito nas taxas")
+    "cerca de 0,01% da base; mantidos, sem efeito nas taxas")
 chk("voos", "justificativa de atraso preenchida", um("SELECT COUNT(*) FROM voos WHERE justificativa IS NOT NULL"), True,
     "campo vazio desde 2020 (revogação da IAC 1504): a causa do atraso não é observável")
 
