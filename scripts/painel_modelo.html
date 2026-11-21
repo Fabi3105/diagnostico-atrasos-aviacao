@@ -365,7 +365,7 @@ footer{color:var(--ink-3);font-size:12.5px;padding:26px 0 40px;border-top:1px so
     <li><b>Escopo:</b> voos domésticos regulares com horário previsto, de set/2024 a ago/2026, o mesmo do relatório.</li>
     <li><b>Atraso:</b> partida mais de 30 minutos depois do previsto (classe oficial da ANAC), sobre os voos realizados. <b>Cancelamento:</b> sobre os voos previstos. Partida é a saída do calço (off-block). <b>A15:</b> chegada até 15 minutos depois do horário, o critério de mercado.</li>
     <li><b>Situação no painel de partidas:</b> compara o número filtrado com a rede inteira no período todo (atraso 7,9%, cancelamento 2,0%). "Acima da rede" quando passa a rede em mais de 1 ponto no atraso ou 0,5 ponto no cancelamento; "abaixo", no sentido contrário.</li>
-    <li><b>Minutos de atraso:</b> soma dos minutos dos voos atrasados, cada voo limitado a 24 horas. <b>Mediana do atraso:</b> metade dos voos atrasados esperou menos que isso; calculada por faixas de minutos, responde aos filtros (51 minutos no período todo, como no relatório). <b>A/A:</b> variação contra os mesmos meses do ano anterior; aparece quando o período começa em set/25 ou depois.</li>
+    <li><b>Minutos de atraso:</b> soma dos minutos dos voos atrasados, cada voo limitado a 24 horas. <b>Mediana do atraso:</b> metade dos voos atrasados esperou menos que isso; no período todo é o valor exato (51 minutos, como no relatório); com filtros, é estimada por faixas de minutos e pode variar cerca de 1 minuto. <b>A/A:</b> variação contra os mesmos meses do ano anterior; aparece quando o período começa em set/25 ou depois.</li>
     <li><b>Ponto:</b> diferença direta entre duas taxas (de 7% para 8% é 1 ponto).</li>
     <li><b>Hora:</b> hora local do aeroporto de origem. <b>Aeroporto:</b> o filtro usa o aeroporto de origem; os 50 maiores aparecem na lista.</li>
     <li><b>Reclamações:</b> Azul, LATAM e Gol, tema principal de cada reclamação (o relatório conta todos os temas citados e todas as companhias, por isso as partes diferem). Sem aeroporto escolhido, contam todas as da companhia. Com aeroporto, só as que o citam como primeiro local, em operação doméstica; por isso podem diferir um pouco das tabelas do relatório.</li>
@@ -518,6 +518,8 @@ function linhas(el, xs, series, opt){
 }
 
 function mediana(e){
+  // Sem filtro usa o valor exato; com filtro, estima pelas faixas de minutos.
+  if (e.a === 0 && e.b === D.meses.length - 1 && e.cia == null && e.aer == null) return D.mediana_total;
   const nb = D.bordas.length - 1, c = new Array(nb).fill(0);
   for (const r of D.hb) if (r[0] >= e.a && r[0] <= e.b && (e.cia == null || r[1] === e.cia) && (e.aer == null || r[2] === e.aer)) for (let k = 0; k < nb; k++) c[k] += r[3 + k];
   const tot = c.reduce((a, b) => a + b, 0); if (!tot) return null;

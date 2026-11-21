@@ -2,3 +2,6 @@
 pandas==2.3.3
 numpy==2.2.6
 matplotlib==3.10.9
+# Só para gerar o PDF (scripts/gerar_pdf.py), com Edge ou Chrome instalado
+markdown==3.7
+playwright==1.49.1

@@ -58,7 +58,7 @@ dados = {
     "v": g[["mi", "ci", "ai", "h", "prev", "canc", "real", "atr", "mins"]].values.tolist(),
     "cheg": ch[["mi", "ci", "di", "n"]].values.tolist(),
     "r": rr[["mi", "ci", "ai", "ti", "gi", "di", "n"]].values.tolist(),
-    "hb": hb.values.tolist(), "bordas": BORDAS,
+    "hb": hb.values.tolist(), "bordas": BORDAS, "mediana_total": float(at.minutos_atraso.median()),
     "ind": dict(zip(ind.indicador, ind.valor)),
 }
 
