@@ -18,8 +18,8 @@ chk("voos", "tipo de linha", "; ".join(f"{a}={b:,}" for a, b in zip(t.tipo_linha
     "N doméstico regular, I internacional, G cargueiro, C charter. Escopo: N (definição B)")
 sp = ler("SELECT situacao, COUNT(*) n FROM voos WHERE partida_prev IS NULL GROUP BY 1")
 chk("voos", "registros sem horário previsto", "; ".join(f"{a}={b:,}" for a, b in zip(sp.situacao, sp.n)), True,
-    "voos não programados (extras, traslados, retornos ao pátio, testes; muitos com prefixo Z e origem = destino). "
-    "Não são promessa ao passageiro: fora do escopo")
+    "tratados como voos não programados (extras, traslados, retornos ao pátio, testes; 87% com prefixo Z). "
+    "Fora do escopo. Horários com fração de segundo (.100000000) são lidos em carga.py e não entram nesta contagem")
 chk("voos", "realizados sem horário real", um("SELECT COUNT(*) FROM voos WHERE situacao='REALIZADO' AND partida_real IS NULL"),
     um("SELECT COUNT(*) FROM voos WHERE situacao='REALIZADO' AND partida_real IS NULL") == 0)
 chk("voos", "cancelados com horário real", um("SELECT COUNT(*) FROM voos WHERE situacao='CANCELADO' AND partida_real IS NOT NULL"),

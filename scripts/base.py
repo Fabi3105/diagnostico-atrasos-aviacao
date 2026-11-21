@@ -101,8 +101,9 @@ TEMA = {  # grupos do Anexo II, para leitura
 }
 
 # Definição B (aprovada): voos domésticos regulares com horário previsto, no período completo.
-# Voos sem horário previsto são voos não programados (extras, traslados, retornos, testes): não são promessa
-# ao passageiro e ficam fora das taxas de pontualidade e de cancelamento.
+# Registros sem horário previsto (57.247, todos realizados; 87% com número de voo de prefixo Z) são tratados como
+# voos não programados (extras, traslados, retornos, testes) e ficam fora das taxas de pontualidade e de cancelamento.
+# Horários com fração de segundo (.100000000) são horários válidos: carga.py os lê e eles entram no escopo.
 ESCOPO = (f"tipo_linha = 'N' AND partida_prev IS NOT NULL "
           f"AND partida_prev >= '{VOO_INI}' AND partida_prev < '{VOO_FIM}'")
 

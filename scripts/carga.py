@@ -22,10 +22,17 @@ partes = []
 for f in sorted(glob.glob(str(BRUTOS / "VRA_*.csv"))):
     d = ler_csv(f).rename(columns=cols)
     d["arquivo"] = f.split("VRA_")[1][:-4]
+    for c in ["partida_prev", "partida_real", "chegada_prev", "chegada_real"]:
+        # Parte dos horários vem com fração de segundo (ex.: "2025-01-01 10:00:00.100000000"): a fração é
+        # descartada antes da conversão, senão o registro vira NaT e parece não ter horário previsto.
+        bruto = d[c]
+        d[c] = pd.to_datetime(bruto.str.replace(r"\.\d+$", "", regex=True), format="%Y-%m-%d %H:%M:%S", errors="coerce")
+        perdidos = int((d[c].isna() & bruto.notna()).sum())
+        if perdidos:
+            print(f"AVISO {f}: {c} com {perdidos:,} valores preenchidos que não viraram data")
     partes.append(d)
 v = pd.concat(partes, ignore_index=True)
-for c in ["partida_prev", "partida_real", "chegada_prev", "chegada_real"]:
-    v[c] = pd.to_datetime(v[c], format="%Y-%m-%d %H:%M:%S", errors="coerce")
+del partes
 v["atraso_partida"] = (v.partida_real - v.partida_prev).dt.total_seconds() / 60
 v["atraso_chegada"] = (v.chegada_real - v.chegada_prev).dt.total_seconds() / 60
 v["duracao_prev"] = (v.chegada_prev - v.partida_prev).dt.total_seconds() / 60
