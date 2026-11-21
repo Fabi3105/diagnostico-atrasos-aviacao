@@ -58,7 +58,7 @@ Código e textos sob a licença MIT ([LICENSE](LICENSE)). Os dados seguem os ter
 
 ## Summary in English
 
-Independent study of all scheduled domestic flights in Brazil (ANAC open data, Sep/2024 to Aug/2026, 1.57 million flights) and all airline complaints filed on consumidor.gov.br (2024 and 2025), written from the point of view of an airline's operations and customer-service management.
+Independent study of all scheduled domestic flights in Brazil (ANAC open data, Sep/2024 to Aug/2026, 1.58 million flights) and all airline complaints filed on consumidor.gov.br (2024 and 2025), written from the point of view of an airline's operations and customer-service management.
 
 1. **Delay starts at a few airports and spreads through each airline's own network.** Among Azul, LATAM and Gol, the airport accounts for 86% of the delay difference explained by airline and airport; GRU and Congonhas hold 27% of all delay minutes.
 2. **Schedules have little buffer, and targeted buffer pays off more.** With the same number of minutes, buffer placed by airport, month and time of day avoids almost 30% more delays than a flat buffer (rule learned on year 1, tested on year 2).

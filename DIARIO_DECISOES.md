@@ -38,7 +38,7 @@ Registro, etapa a etapa, das perguntas, das decisões de método, dos resultados
 ## Etapa 1. Conhecer e validar os dados
 
 - **Carga:** `scripts/carga.py` grava as tabelas voos, reclamacoes e rec_codigos no SQLite (caminho em ANAC_SQLITE). `scripts/validar_dados.py` gera `resultados/validacao_dados.csv`; resumo em `RESUMO_DADOS.md`.
-- **Correção registrada:** na mensagem anterior ao Fabian, os 160 mil voos "realizados sem horário real" foram uma leitura errada. Todo voo realizado tem horário real. O que falta em 181.860 registros é o horário *previsto*: são voos não programados (extras, traslados, retornos, testes), fora do escopo por não serem promessa ao passageiro.
+- **Correção registrada:** na mensagem anterior ao Fabian, os 160 mil voos "realizados sem horário real" foram uma leitura errada. Todo voo realizado tem horário real. O que falta em 181.860 registros é o horário *previsto*: são voos não programados (extras, traslados, retornos, testes), fora do escopo por não serem promessa ao passageiro. *(Afirmação corrigida em 21/11/2026: 124.613 desses registros tinham horário previsto com fração de segundo; ver a última entrada deste diário.)*
 - **Achados de método:** horários em horário de Brasília (verificado); partida = saída do pátio; a base não informa a antecedência do cancelamento; tabela ICAO->IATA montada pelo analista (cobre 99,2% dos voos e 99,9% das citações domésticas).
 - **Revisão do Fabian (10/10/2026):** Etapa 1 aprovada (implícita na aprovação das perguntas).
 
@@ -433,3 +433,15 @@ Todas aprovadas; passam a valer como parte das perguntas principais.
 - About preenchido com site e tópicos (airline, anac, aviation, brazil, customer-experience, dashboard, data-analysis, portfolio, python).
 - Painel e links do relatório (PDF e texto) conferidos no ar.
 - Ajuste posterior no README: frase do achado 1 alinhada com o relatório.
+
+## Correção da leitura de horários (21/11/2026)
+
+- **Erro:** `scripts/carga.py` convertia os horários com formato fixo, sem fração de segundo. 124.613 registros do VRA têm `Partida Prevista` e `Chegada Prevista` terminando em `.100000000`; viravam vazios e eram contados como "sem horário previsto". A afirmação de que os 181.860 registros eram todos voos não programados estava errada.
+- **Correção (aprovada pelo dono do estudo):** a fração é descartada antes da conversão, e a carga avisa se algum valor preenchido não virar data.
+- **Efeito na base:** sem horário previsto de 181.860 para 57.247 (todos realizados; 87% com prefixo Z); escopo de 1.570.951 para 1.580.343 (+9.392); realizados de 1.540.099 para 1.548.607; cancelados de 30.852 para 31.736. Atraso na partida de 7,87% para 7,88%, na chegada de 7,84% para 7,86%, partida antecipada de 56,13% para 56,11%, cancelamento de 1,96% para 2,01%.
+- **Quem muda:** Azul ganha 1.462 voos, Gol 27 e LATAM nenhum; as três grandes mudam no máximo 0,01 ponto. As regionais mudam muito: SID de 81 para 4.294 voos, ABJ de 575 para 2.452, CQB de 300 para 741, MWM de 24 para 450, PTB de 6.286 para 6.410; BPC (622) e PLS (100) passam a aparecer.
+- **O que muda nas conclusões:** entre as estrangeiras, a Iberia passa a ser a pior em reclamações por passageiro (42,6 por 10 mil), à frente da Avianca (25,5), porque sete companhias estrangeiras antes sem voos suficientes entram no ranking; o teste de padrão da companhia passa de 82% para 77% de acerto, com 21 companhias em vez de 14 (ao acaso, de 7% para 4%); a recorrência de bagagem extraviada da Azul cai de 1,7 para 1,5 vez o mercado; a razão entre cancelar e atrasar vai a 1,8 em todas as reclamações com aeroporto; nos dias de pico, o fim da tarde e a noite pioram de 1,8 a 2,6 pontos (antes 1,2 a 2,2).
+- **Estrangeiras:** 82.100 dos registros corrigidos são internacionais. As taxas de reclamações por 10 mil voos das estrangeiras estavam infladas por falta de voos no denominador (ex.: Copa de 2.979 para 1.235, American de 3.970 para 2.277). As taxas por passageiro não dependem do VRA e não mudam.
+- **O que não muda:** o peso do aeroporto (86%), GRU como pior aeroporto, a ponte aérea cancelando 2,4 vezes mais, a ordem Gol, LATAM e Azul na recuperação, as cinco combinações crônicas, os sete temas recorrentes, as soluções e os pilotos.
+- **Pendências:** `RELATORIO.pdf` não foi regenerado, porque o projeto não tem script para isso, e segue com os números antigos. O código literal `NA` de tipo de linha (463 linhas) continua virando vazio no `pd.read_csv`; não foi alterado. O significado do sufixo `.100000000` não está documentado nas fontes consultadas.
+- **Ambiente da reexecução:** Python 3.12 com as versões de `requirements.txt` (o estudo original usou Python 3.10). Banco fora da pasta do projeto, via `ANAC_SQLITE`.
